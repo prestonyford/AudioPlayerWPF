@@ -1,0 +1,46 @@
+﻿<Window x:Class="AudioPlayerWPF.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AudioPlayerWPF"
+        mc:Ignorable="d"
+        Background="#F0F0F0"
+        ShowInTaskbar="False"
+        Title="About" Height="340" Width="420">
+    <Grid>
+        <DockPanel Margin="6">
+            <Button DockPanel.Dock="Bottom" Width="73" Height="23" HorizontalAlignment="Right" Margin="0, 4, 4, 4" Click="OKButton_Click">OK</Button>
+            <Border DockPanel.Dock="Top" BorderBrush="DarkGray" VerticalAlignment="Top" BorderThickness="2" CornerRadius="6" Padding="0,6,0,6" Margin="4,0,4,4">
+                <StackPanel>
+                    <TextBlock Text="AudioPlayerWPF v1.0" HorizontalAlignment="Center" FontSize="28"/>
+                    <TextBlock Text="Preston Ford - 8/15/23" HorizontalAlignment="Center" FontSize="12" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Padding="6" TextWrapping="Wrap">This is my first ever project written in C#. It uses the WPF (Windows Presentation Foundation) GUI framework, which is included in Microsoft's .NET Core.</TextBlock>
+                    <TextBlock Padding="6,0,6,6" TextWrapping="Wrap">
+                        <Run Text="Tag reading/editing functionality is provided by"/>
+                        <Hyperlink NavigateUri="https://taglib.org/" RequestNavigate="Hyperlink_RequestNavigateTagLib">
+                            <TextBlock TextDecorations="Underline">
+                                <Run Text="TagLib#"/>
+                            </TextBlock>
+                        </Hyperlink><!--
+                        --><Run Text="." />
+                    </TextBlock>
+                    <TextBlock Padding="6,0,6,6" TextWrapping="Wrap">
+                        <Run Text="Your data is stored "/><!--
+                        --><Hyperlink Name="fileStorageHyperlink" Click="FileStorageHyperlink_Click">
+                            <TextBlock>
+                                <Run Text="here"/>
+                            </TextBlock>
+                        </Hyperlink><!--
+                        --><Run Text=". Please do not edit JSON data for bookmarks or song settings manually. Bookmarks and song options are saved according to song Title, or file name if there is no Title. Playlist songs are saved by file location."/>
+                    </TextBlock>
+                    <TextBlock Padding="6,0,6,0" TextWrapping="Wrap" FontStyle="Italic">preston5162@gmail.com</TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</Window>

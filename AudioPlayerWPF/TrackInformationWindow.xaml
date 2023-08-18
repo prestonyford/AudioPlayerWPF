@@ -1,0 +1,97 @@
+﻿<Window x:Class="AudioPlayerWPF.TrackInformationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AudioPlayerWPF"
+        mc:Ignorable="d"
+        Background="#F0F0F0"
+        Title="Track Information"
+        Height="340" Width="436" 
+        MinHeight="310" MinWidth="412"
+        Closing="Window_Closing">
+        <!-- 310 -->
+        <!-- MaxHeight="512" MaxWidth="720" -->
+    <Grid>
+        <DockPanel>
+            <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom">
+                <Separator DockPanel.Dock="Top"/>
+                <TextBlock Name="newTagFormatBlock" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="10,8,8,8" FontStyle="Italic" Text="Editing song tags may affect bookmark data" />
+                <Button Width="75" Height="23" Content="Confirm" Click="ConfirmButton_Click" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                <Button Width="75" Height="23" Content="Cancel" Click="CancelButton_Click" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+            </DockPanel>
+            <ScrollViewer VerticalAlignment="Stretch">
+                <StackPanel>
+                    <GroupBox Margin="6" Padding="10,4,10,10" Header="Properties">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="File size: " Grid.Row="0"/>
+                            <TextBlock Name="fileSize" Text="0.00 MB" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1"/>
+
+                            <TextBlock Text="Metadata container: " Grid.Row="1"/> <!-- ID3v2 or Vorbis Comment -->
+                            <TextBlock Name="metadataContainer" Text="n/a" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1"/>
+
+                            <TextBlock Text="Audio format: " Grid.Row="2"/>
+                            <TextBlock Name="audioFormat" Text="n/a" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1"/>
+
+                            <TextBlock Text="Bitrate: " Grid.Row="3"/>
+                            <TextBlock Name="bitrate" Text="n/a" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1"/>
+
+                            <TextBlock Text="Channels: " Grid.Row="4"/>
+                            <TextBlock Name="channels" Text="n/a" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1"/>
+
+                            <TextBlock Text="Sample rate: " Grid.Row="5"/>
+                            <TextBlock Name="sampleRate" Text="n/a" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="1"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Margin="6" Padding="10,4,10,10" Header="Edit Metadata">
+                        <StackPanel Margin="0">
+                            <Label Content="_Title:" Target="{Binding ElementName=txtBoxTitle}" />
+                            <TextBox Name="txtBoxTitle" />
+                            <Label Content="_Artist:" Target="{Binding ElementName=txtBoxArtist}" />
+                            <TextBox Name="txtBoxArtist" />
+                            <Label Content="_Album:" Target="{Binding ElementName=txtBoxAlbum}" />
+                            <TextBox Name="txtBoxAlbum" />
+                            <Label Content="_Album Artist:" Target="{Binding ElementName=txtBoxAlbumArtist}" />
+                            <TextBox Name="txtBoxAlbumArtist" />
+                            <Label Content="_Genre:" Target="{Binding ElementName=txtBoxGenre}" />
+                            <TextBox Name="txtBoxGenre" />
+                            <Label Content="_Year:" Target="{Binding ElementName=txtBoxYear}" />
+                            <TextBox Name="txtBoxYear" />
+                            <Label Content="_Track Number:" Target="{Binding ElementName=txtBoxTrackNumber}" />
+                            <TextBox Name="txtBoxTrackNumber" />
+                            <Label Content="_Disc Number:" Target="{Binding ElementName=txtBoxDiscNumber}" />
+                            <TextBox Name="txtBoxDiscNumber" />
+                            <Label Content="_Covert art:" Target="{Binding ElementName=browseButtonCoverArt}" />
+
+                            <DockPanel>
+                                <Border BorderBrush="DarkGray" BorderThickness="1.2" CornerRadius="2">
+                                    <Image Name="albumArtImage" Source="/Images/noimg.jpg" RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Top" HorizontalAlignment="Left" Width="128"></Image>
+                                </Border>
+                                <StackPanel>
+                                    <Button Name="browseButton" Click="BrowseButton_Click" Width="75" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="8,6,6,4" >Browse</Button>
+                                    <TextBlock Name="browseURITextBlock" TextWrapping="Wrap" Text="" Margin="8,0,0,2" FontStyle="Italic"/>
+                                    <Separator/>
+                                </StackPanel>
+                            </DockPanel>
+
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+        
+    </Grid>
+</Window>

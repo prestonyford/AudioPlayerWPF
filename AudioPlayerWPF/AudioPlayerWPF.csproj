@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\backward-10.png" />
+    <None Remove="Images\fast-forward.png" />
+    <None Remove="Images\forward-10.png" />
+    <None Remove="Images\icons8-add-bookmark-48.png" />
+    <None Remove="Images\icons8-bookmark-48.png" />
+    <None Remove="Images\icons8-bookmark-book-48.png" />
+    <None Remove="Images\icons8-close-48.png" />
+    <None Remove="Images\icons8-delete-48.png" />
+    <None Remove="Images\icons8-delete-bookmark-48.png" />
+    <None Remove="Images\icons8-done-48.png" />
+    <None Remove="Images\icons8-edit-48.png" />
+    <None Remove="Images\icons8-fast-forward-48.png" />
+    <None Remove="Images\icons8-folder-48.png" />
+    <None Remove="Images\icons8-forward-10-48.png" />
+    <None Remove="Images\icons8-info-48.png" />
+    <None Remove="Images\icons8-music-48.png" />
+    <None Remove="Images\icons8-pause-48.png" />
+    <None Remove="Images\icons8-play-48.png" />
+    <None Remove="Images\icons8-playlist-48.png" />
+    <None Remove="Images\icons8-repeat-48.png" />
+    <None Remove="Images\icons8-replay-10-48.png" />
+    <None Remove="Images\icons8-resume-button-48.png" />
+    <None Remove="Images\icons8-rewind-48.png" />
+    <None Remove="Images\icons8-services-48.png" />
+    <None Remove="Images\icons8-settings-48.png" />
+    <None Remove="Images\icons8-sheet-music-48.png" />
+    <None Remove="Images\icons8-shuffle-48.png" />
+    <None Remove="Images\icons8-smart-playlist-48.png" />
+    <None Remove="Images\icons8-sorting-arrows-horizontal-48.png" />
+    <None Remove="Images\noimg.jpg" />
+    <None Remove="Images\pause.png" />
+    <None Remove="Images\play.png" />
+    <None Remove="Images\resume-white.png" />
+    <None Remove="Images\resume.png" />
+    <None Remove="Images\rewind.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\icons8-bookmark-48.png" />
+    <Resource Include="Images\icons8-bookmark-book-48.png" />
+    <Resource Include="Images\icons8-close-48.png" />
+    <Resource Include="Images\icons8-delete-48.png" />
+    <Resource Include="Images\icons8-edit-48.png" />
+    <Resource Include="Images\icons8-fast-forward-48.png" />
+    <Resource Include="Images\icons8-folder-48.png" />
+    <Resource Include="Images\icons8-forward-10-48.png" />
+    <Resource Include="Images\icons8-info-48.png" />
+    <Resource Include="Images\icons8-music-48.png" />
+    <Resource Include="Images\icons8-pause-48.png" />
+    <Resource Include="Images\icons8-play-48.png" />
+    <Resource Include="Images\icons8-playlist-48.png" />
+    <Resource Include="Images\icons8-repeat-48.png" />
+    <Resource Include="Images\icons8-replay-10-48.png" />
+    <Resource Include="Images\icons8-resume-button-48.png" />
+    <Resource Include="Images\icons8-rewind-48.png" />
+    <Resource Include="Images\icons8-services-48.png" />
+    <Resource Include="Images\icons8-sheet-music-48.png" />
+    <Resource Include="Images\icons8-shuffle-48.png" />
+    <Resource Include="Images\icons8-smart-playlist-48.png" />
+    <Resource Include="Images\noimg.jpg" />
+  </ItemGroup>
+
+</Project>
