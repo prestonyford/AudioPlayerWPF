@@ -2,6 +2,7 @@
 An audio player built with .NET's WPF framework that provides several useful features, such as editing tag properties, playlists, bookmarks, and other individual song settings.
 
 Screenshots
+
 <img src="screenshot1.png">
 <img src="screenshot2.png">
 
