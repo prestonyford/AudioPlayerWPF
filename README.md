@@ -2,8 +2,8 @@
 An audio player built with .NET's WPF framework that provides several useful features, such as editing tag properties, playlists, bookmarks, and other individual song settings.
 
 Screenshots
-![Main window](/relative/path/to/screenshot1.png?raw=true "Main window")
-![View bookmarks](/relative/path/to/screenshot2.png?raw=true "Bookmarks")
+<img src="screenshot1.png">
+<img src="screenshot2.png">
 
 Required Dependencies (NuGet):
 - TagLib#
