@@ -13,7 +13,7 @@
             <Button DockPanel.Dock="Bottom" Width="73" Height="23" HorizontalAlignment="Right" Margin="0, 4, 4, 4" Click="OKButton_Click">OK</Button>
             <Border DockPanel.Dock="Top" BorderBrush="DarkGray" VerticalAlignment="Top" BorderThickness="2" CornerRadius="6" Padding="0,6,0,6" Margin="4,0,4,4">
                 <StackPanel>
-                    <TextBlock Text="AudioPlayerWPF v1.0" HorizontalAlignment="Center" FontSize="28"/>
+                    <TextBlock Text="AudioPlayerWPF v1.0.1" HorizontalAlignment="Center" FontSize="28"/>
                     <TextBlock Text="Preston Ford - 8/15/23" HorizontalAlignment="Center" FontSize="12" Margin="0,6,0,0"/>
                 </StackPanel>
             </Border>
@@ -38,7 +38,7 @@
                         </Hyperlink><!--
                         --><Run Text=". Please do not edit JSON data for bookmarks or song settings manually. Bookmarks and song options are saved according to song Title, or file name if there is no Title. Playlist songs are saved by file location."/>
                     </TextBlock>
-                    <TextBlock Padding="6,0,6,0" TextWrapping="Wrap" FontStyle="Italic">preston5162@gmail.com</TextBlock>
+                    <TextBlock Padding="6,0,6,0" TextWrapping="Wrap" FontStyle="Italic">preston.y.ford@gmail.com</TextBlock>
                 </StackPanel>
             </ScrollViewer>
         </DockPanel>
