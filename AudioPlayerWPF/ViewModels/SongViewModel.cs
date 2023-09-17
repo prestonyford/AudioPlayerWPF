@@ -9,6 +9,7 @@ namespace AudioPlayerWPF.ViewModels
         private string currentSongTitle;
         private string currentAlbum;
         private string currentArtist;
+        private string currentAlbumArtist;
         private BitmapImage currentAlbumArt;
         private TimeSpan totalSongDuration;
         private TimeSpan currentSongPosition;
@@ -47,6 +48,16 @@ namespace AudioPlayerWPF.ViewModels
                 if (currentArtist != value) {
                     currentArtist = value;
                     OnPropertyChanged(nameof(CurrentArtist));
+                }
+            }
+        }
+
+        public string CurrentAlbumArtist {
+            get { return currentAlbumArtist; }
+            set {
+                if (currentAlbumArtist != value) {
+                    currentAlbumArtist = value;
+                    OnPropertyChanged(nameof(CurrentAlbumArtist));
                 }
             }
         }

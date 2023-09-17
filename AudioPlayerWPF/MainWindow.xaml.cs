@@ -12,8 +12,6 @@ using System.Windows.Threading;
 using System.IO;
 using System.Text.Json;
 
-// TODO: Project -> Properties -> Application -> Output Type -> set to Windows Application to remove console window
-
 namespace AudioPlayerWPF {
     public partial class MainWindow : Window {
         private SongViewModel songViewModel;
@@ -70,6 +68,10 @@ namespace AudioPlayerWPF {
 
             Closing += (sender, e) => { Application.Current.Shutdown(); };
         }
+
+        // Properties
+        public double WindowWidth { get { return this.Width; } }
+        public double WindowHeight { get { return this.Height; } }
 
         // Helpers
 
@@ -270,6 +272,12 @@ namespace AudioPlayerWPF {
             }
             else {
                 songViewModel.CurrentArtist = song.Artist;
+            }
+            if (song.AlbumArtist == null || song.AlbumArtist == "") {
+                songViewModel.CurrentArtist = "n/a";
+            }
+            else {
+                songViewModel.CurrentArtist = song.AlbumArtist;
             }
             songViewModel.TotalSongDuration = song.Duration;
         }
@@ -770,6 +778,38 @@ namespace AudioPlayerWPF {
                 window.SongOptionsWindowConfirmButtonPressed -= OnSongOptionsWindowConfirmButtonPressed;
             }
             LoadOptions();
+        }
+
+        private void MainFileDragEnter(object sender, DragEventArgs e) {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                e.Effects = DragDropEffects.Copy;
+            }
+            else {
+                e.Effects = DragDropEffects.None;
+            }
+            e.Handled = true;
+        }
+
+        private void MainFileDrop(object sender, DragEventArgs e) {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                List<Song> songs = new List<Song>();
+                foreach (string file in files) {
+                    songs.Add(new Song(new Uri(file)));
+                }
+                playlist = new Playlist("Untitled playlist", songs);
+                OpenNewSong(playlist.CurrentSong.FileUri);
+                UpdateViewModel();
+                if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
+                    nextTrackButton.IsEnabled = false;
+                }
+                else {
+                    nextTrackButton.IsEnabled = true;
+                }
+                prevTrackButton.IsEnabled = false;
+
+            }
         }
     }
 }

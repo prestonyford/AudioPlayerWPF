@@ -15,14 +15,14 @@
 
     <!-- Height="220" Width="492" -->
     <Window.Resources>
-        <SolidColorBrush x:Key="WindowBackground" Color="#F0F0F0" />
+        <SolidColorBrush x:Key="WindowBackground" Color="White" />
         <SolidColorBrush x:Key="FontColor" Color="Black" />
 
         <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
-                        <StackPanel Margin="-20,0,0,0" Background="#F0F0F0"/>
+                        <StackPanel Margin="-20,0,0,0" Background="White"/>
                     </ItemsPanelTemplate>
                 </Setter.Value>
             </Setter>
@@ -113,14 +113,16 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+
         <DockPanel Margin="0,0,0,0" Grid.Row="1">
+            <Separator DockPanel.Dock="Top" Margin="0,0,0,0" Height="1" Background="#F0F0F0"/>
             <Grid Height="Auto" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
-                <Image Name="coverArtImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding CurrentAlbumArt, UpdateSourceTrigger=PropertyChanged}" d:Source="/Images/noimg.jpg" Margin="4"/>
+                <Image Name="coverArtImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding CurrentAlbumArt, UpdateSourceTrigger=PropertyChanged}" d:Source="/Images/noimg.jpg" Margin="0" AllowDrop="True" DragEnter="MainFileDragEnter" Drop="MainFileDrop"/>
             </Grid>
-            <DockPanel HorizontalAlignment="Stretch">
+            <DockPanel Margin="6,0,0,0" HorizontalAlignment="Stretch">
                 <TextBlock x:Name="titleBlock" DockPanel.Dock="Top" Text="{Binding CurrentSongTitle, UpdateSourceTrigger=PropertyChanged}" d:Text="Title goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,4,1,1" FontSize="20" FontFamily="Roboto" FontWeight="Bold" />
                 <TextBlock x:Name="albumBlock" DockPanel.Dock="Top" Text="{Binding CurrentAlbum, UpdateSourceTrigger=PropertyChanged}" d:Text="Album goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,1,1,1" FontSize="10" FontFamily="Roboto" />
-                <TextBlock x:Name="artistBlock" DockPanel.Dock="Top" Text="{Binding CurrentArtist, UpdateSourceTrigger=PropertyChanged}" d:Text="Artist goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,2,1,1" FontSize="10" FontFamily="Roboto" FontStyle="Italic" />
+                <TextBlock x:Name="artistBlock" DockPanel.Dock="Top" Text="{Binding CurrentArtist, UpdateSourceTrigger=PropertyChanged}" d:Text="Album artist goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,2,1,1" FontSize="10" FontFamily="Roboto" FontStyle="Italic" />
                 <StackPanel>
                     <DockPanel Margin="6,2,14,0">
                         <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentSongPosition, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>

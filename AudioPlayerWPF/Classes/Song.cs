@@ -49,6 +49,8 @@ namespace AudioPlayerWPF.Classes
         }
         public string? Album { get { return audioFile.Tag.Album; } }
         public string? Artist { get { return string.Join(", ", audioFile.Tag.Performers); } }
+
+        public string? AlbumArtist { get { return string.Join(", ", audioFile.Tag.AlbumArtists); } }
         public TimeSpan Duration { get { return audioFile.Properties.Duration; } }
 
         public string FileUriString { get { return fileUri.LocalPath.ToString(); } }
