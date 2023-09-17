@@ -3,8 +3,8 @@ An audio player built with .NET's WPF framework that provides several useful fea
 
 Screenshots
 
-<img src="screenshot1.png">
-<img src="screenshot2.png">
+<img src="screenshot1.png" width="400">
+<img src="screenshot2.png" width="800">
 
 Required Dependencies (NuGet):
 - TagLib#
