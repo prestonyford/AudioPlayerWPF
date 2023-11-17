@@ -6,6 +6,8 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         
         xmlns:local="clr-namespace:AudioPlayerWPF"
+        xmlns:classes="clr-namespace:AudioPlayerWPF.Classes"
+        
         mc:Ignorable="d"
         Title="AudioPlayerWPF"
         Height="200" Width="460"
@@ -15,6 +17,8 @@
 
     <!-- Height="220" Width="492" -->
     <Window.Resources>
+        <classes:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
+
         <SolidColorBrush x:Key="WindowBackground" Color="White" />
         <SolidColorBrush x:Key="FontColor" Color="Black" />
 
@@ -129,10 +133,40 @@
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding TotalSongDuration, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>
                         <TextBlock Name="loadingBlock" Text="Loading..." FontStyle="Italic" HorizontalAlignment="Center" Visibility="Hidden"/>
                     </DockPanel>
-                    <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted"/>
+
+
+                    <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted">
+                        <Slider.Template>
+                            <ControlTemplate TargetType="Slider">
+                                <Grid Height="10px" Margin="0px 2px 0px 4px">
+                                    <Border Background="LightGray" CornerRadius="4"/>
+
+                                    <!-- Left side of the thumb -->
+                                    <Border Name="LeftTrack" HorizontalAlignment="Left" Background="#0883D9">
+                                        <Border.CornerRadius>
+                                            <CornerRadius TopLeft="4" TopRight="0" BottomRight="0" BottomLeft="4"/>
+                                        </Border.CornerRadius>
+                                    </Border>
+
+                                    <!-- Thumb -->
+                                    <Thumb Name="TrackThumb" Width="10px" HorizontalAlignment="Left" Margin="{Binding ElementName=LeftTrack, Path=ActualWidth, Converter={StaticResource DoubleToMarginLeftConverter}, ConverterParameter=5}">
+                                        <Thumb.Style>
+                                            <Style>
+
+                                            </Style>
+                                        </Thumb.Style>
+                                    </Thumb>
+
+                                </Grid>
+                            </ControlTemplate>
+                        </Slider.Template>
+
+                    </Slider>
+
+
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="-8,4,0,0" >
                         <Button x:Name="prevTrackButton" Width="36" Height="36" Click="PrevTrackButton_Click" Margin="0,0,10,0" ToolTip="Previous song">
-                            <Image Source="/Images/icons8-rewind-48.png"/>
+                            <Image x:Name="prevTrackButtonImage" Source="/Images/icons8-rewind-48.png"/>
                         </Button>
                         <Button x:Name="seekBackButton" Width="36" Height="36" Click="SeekBackButton_Click" ToolTip="Seek backwards a configurable amount of time">
                             <Image Source="/Images/icons8-replay-10-48.png"/>
@@ -144,7 +178,7 @@
                             <Image Source="/Images/icons8-forward-10-48.png"/>
                         </Button>
                         <Button x:Name="nextTrackButton" Width="36" Height="36" Click="NextTrackButton_Click" Margin="10,0,0,0" ToolTip="Next song">
-                            <Image Source="/Images/icons8-fast-forward-48.png"/>
+                            <Image x:Name="nextTrackButtonImage" Source="/Images/icons8-fast-forward-48.png"/>
                         </Button>
                         <!--<Button Name="replayToggleButton" Width="36" Height="36" Click="replayToggleButton_Click" Margin="10,0,0,0">Replay</Button>-->
                     </StackPanel>

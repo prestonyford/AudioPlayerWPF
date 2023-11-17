@@ -22,6 +22,10 @@ namespace AudioPlayerWPF {
         public static readonly BitmapImage deleteIcon = new BitmapImage(new Uri("/Images/icons8-delete-48.png", UriKind.Relative));
         public static readonly BitmapImage songIcon = new BitmapImage(new Uri("/Images/icons8-music-48.png", UriKind.Relative));
         public static readonly BitmapImage bookmarkIcon = new BitmapImage(new Uri("/Images/icons8-bookmark-48.png", UriKind.Relative));
+        public static readonly BitmapImage fastForwardIcon = new BitmapImage(new Uri("/Images/icons8-fast-forward-48.png", UriKind.Relative));
+        public static readonly BitmapImage rewindIcon = new BitmapImage(new Uri("/Images/icons8-rewind-48.png", UriKind.Relative));
+        public static readonly BitmapImage fastForwardGreyedIcon = new BitmapImage(new Uri("/Images/icons8-fast-forward-greyed-48.png", UriKind.Relative));
+        public static readonly BitmapImage rewindGreyedIcon = new BitmapImage(new Uri("/Images/icons8-rewind-greyed-48.png", UriKind.Relative));
 
         public App() {
             if (!Directory.Exists(userSubdirectory)) {

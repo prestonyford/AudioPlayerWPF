@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.IO;
 using System.Text.Json;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace AudioPlayerWPF {
     public partial class MainWindow : Window {
@@ -63,8 +64,8 @@ namespace AudioPlayerWPF {
                 playlistMenuItemsDictionary.Add(name, newMenuItem);
             }
 
-            prevTrackButton.IsEnabled = false;
-            nextTrackButton.IsEnabled = false;
+            DisablePrevTrackButton();
+            DisableNextTrackButton();
 
             Closing += (sender, e) => { Application.Current.Shutdown(); };
         }
@@ -135,10 +136,10 @@ namespace AudioPlayerWPF {
                     playlist = new Playlist(name, songs);
                     OpenNewSong(playlist.CurrentSong.FileUri);
                     UpdateViewModel();
-                    if (playlist.CurrentSongIdx == 0) prevTrackButton.IsEnabled = false;
-                    else prevTrackButton.IsEnabled = true;
-                    if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) nextTrackButton.IsEnabled = false;
-                    else nextTrackButton.IsEnabled = true;
+                    if (playlist.CurrentSongIdx == 0) DisablePrevTrackButton();
+                    else EnablePrevTrackButton();
+                    if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) DisableNextTrackButton();
+                    else EnableNextTrackButton();
                 };
                 playMenuItem.Click += playLambda;
 
@@ -185,10 +186,10 @@ namespace AudioPlayerWPF {
                         playlist.CurrentSongIdx = j;
                         OpenNewSong(playlist.Songs[j].FileUri);
                         UpdateViewModel();
-                        if (playlist.CurrentSongIdx == 0) prevTrackButton.IsEnabled = false;
-                        else prevTrackButton.IsEnabled = true;
-                        if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) nextTrackButton.IsEnabled = false;
-                        else nextTrackButton.IsEnabled = true;
+                        if (playlist.CurrentSongIdx == 0) DisablePrevTrackButton();
+                        else EnablePrevTrackButton();
+                        if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) DisableNextTrackButton();
+                        else EnableNextTrackButton();
                     };
                     songMenuItem.Click += songHandler;
                     songButtonsToHandlers.Add(songMenuItem, songHandler);
@@ -210,7 +211,7 @@ namespace AudioPlayerWPF {
                         playlistMenu.Items.Remove(result);
 
                         // Remove song click subscriber from each song
-                        foreach (KeyValuePair<MenuItem, RoutedEventHandler> pair in songButtonsToHandlers){
+                        foreach (KeyValuePair<MenuItem, RoutedEventHandler> pair in songButtonsToHandlers) {
                             pair.Key.Click -= pair.Value;
                         }
                     }
@@ -286,6 +287,10 @@ namespace AudioPlayerWPF {
             if (mediaPlayer.NaturalDuration.HasTimeSpan && !userIsDraggingSlider) {
                 SongSlider.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 SongSlider.Value = mediaPlayer.Position.TotalSeconds;
+
+                Border leftTrack = (Border)SongSlider.Template.FindName("LeftTrack", SongSlider);
+                leftTrack.Width = SongSlider.ActualWidth * SongSlider.Value / SongSlider.Maximum;
+
                 songViewModel.CurrentSongPosition = mediaPlayer.Position;
             }
         }
@@ -340,7 +345,7 @@ namespace AudioPlayerWPF {
 
         private void GoNextTrack() {
             if (playlist == null) { return; }
-            
+
             if (shuffle == true && playlist.Songs.Count > 1) {
                 Random random = new Random();
                 // Prevent playing the same song twice in a row
@@ -357,9 +362,9 @@ namespace AudioPlayerWPF {
             else {
                 ++playlist.CurrentSongIdx;
                 if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
-                    nextTrackButton.IsEnabled = false;
+                    DisableNextTrackButton();
                 }
-                prevTrackButton.IsEnabled = true;
+                EnablePrevTrackButton();
             }
             OpenNewSong(playlist.CurrentSong.FileUri);
             UpdateViewModel();
@@ -367,16 +372,16 @@ namespace AudioPlayerWPF {
 
         private void GoPrevTrack() {
             if (playlist == null) {
-                prevTrackButton.IsEnabled = false;
+                DisablePrevTrackButton();
                 return;
             }
             OpenNewSong(playlist.Songs[--playlist.CurrentSongIdx].FileUri);
             UpdateViewModel();
 
             if (playlist.CurrentSongIdx == 0) {
-                prevTrackButton.IsEnabled = false;
+                DisablePrevTrackButton();
             }
-            nextTrackButton.IsEnabled = true;
+            EnableNextTrackButton();
         }
 
         private void LoadBookmarks() {
@@ -448,6 +453,26 @@ namespace AudioPlayerWPF {
             }
         }
 
+        private void DisableNextTrackButton() {
+            nextTrackButton.IsEnabled = false;
+            nextTrackButtonImage.Source = App.fastForwardGreyedIcon;
+        }
+
+        private void DisablePrevTrackButton() {
+            prevTrackButton.IsEnabled = false;
+            prevTrackButtonImage.Source = App.rewindGreyedIcon;
+        }
+
+        private void EnableNextTrackButton() {
+            nextTrackButton.IsEnabled = true;
+            nextTrackButtonImage.Source = App.fastForwardIcon;
+        }
+
+        private void EnablePrevTrackButton() {
+            prevTrackButton.IsEnabled = true;
+            prevTrackButtonImage.Source = App.rewindIcon;
+        }
+
         // Media event handlers
 
         private void OnMediaEnded(object? sender, EventArgs e) {
@@ -481,7 +506,7 @@ namespace AudioPlayerWPF {
 
             // Check if past ending pos, and end or continue accordingly
             double diff = endingPos - mediaPlayer.Position.TotalMilliseconds;
-            if (endingPos != 0 && diff <= 1 && diff >= -1*tickSpeed) {
+            if (endingPos != 0 && diff <= 1 && diff >= -1 * tickSpeed) {
                 if (repeat) { // Repeat song
                     mediaPlayer.Position = TimeSpan.FromMilliseconds(startingPos);
                 }
@@ -507,7 +532,7 @@ namespace AudioPlayerWPF {
                 SongSlider.Value = 0;
 
                 List<Song> songs = new List<Song>();
-                foreach (string filename in openFileDialog.FileNames){
+                foreach (string filename in openFileDialog.FileNames) {
                     songs.Add(new Song(new Uri(filename)));
                 }
                 playlist = new Playlist("Untitled playlist", songs);
@@ -516,12 +541,12 @@ namespace AudioPlayerWPF {
                 // song.ViewModel.CurrentSongTitle = openFileDialog.SafeFileName; // SafeFileName excludes path
                 UpdateViewModel();
                 if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
-                    nextTrackButton.IsEnabled = false;
+                    DisableNextTrackButton();
                 }
                 else {
-                    nextTrackButton.IsEnabled = true;
+                    EnableNextTrackButton();
                 }
-                prevTrackButton.IsEnabled = false;
+                DisablePrevTrackButton();
             }
 
         }
@@ -586,16 +611,16 @@ namespace AudioPlayerWPF {
             shuffle = !shuffle;
             if (playlist != null) {
                 if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
-                    nextTrackButton.IsEnabled = false;
+                    DisableNextTrackButton();
                 }
                 else {
-                    nextTrackButton.IsEnabled = true;
+                    EnableNextTrackButton();
                 }
                 if (playlist.CurrentSongIdx == 0) {
-                    prevTrackButton.IsEnabled = false;
+                    DisablePrevTrackButton();
                 }
                 else {
-                    prevTrackButton.IsEnabled = true;
+                    EnablePrevTrackButton();
                 }
             }
         }
@@ -678,7 +703,7 @@ namespace AudioPlayerWPF {
                     mediaPlayer.Close();
 
                     int tries = 0;
-                    attempt_save:
+                attempt_save:
                     try {
                         e.Song.TagLibFile.Save();
                     }
@@ -705,7 +730,7 @@ namespace AudioPlayerWPF {
                     UpdateViewModel();
                     OpenNewSong(tempUri);
                     PlayMusic();
-                    
+
                 }
                 catch (Exception ex) {
                     MessageBox.Show("A handled exception just occurred: " + ex.Message, "Exception Occured!", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -737,7 +762,7 @@ namespace AudioPlayerWPF {
             else { // Existing playlist
                 if (e.Name != e.OldName) { // Renamed
                     //Console.WriteLine(3);
-                    if (playlistMenuItemsDictionary.ContainsKey(e.Name)){
+                    if (playlistMenuItemsDictionary.ContainsKey(e.Name)) {
                         playlistMenu.Items.Remove(playlistMenuItemsDictionary[e.Name]);
                         playlistMenuItemsDictionary.Remove(e.Name);
                     }
@@ -765,7 +790,7 @@ namespace AudioPlayerWPF {
                 senderWindow.NewPlaylistCreated -= OnNewPlaylistCreated;
             }
         }
-        
+
         private void OnBookmarksEditorWindowConfirmButtonPressed(object? sender, EventArgs e) {
             if (sender is BookmarksEditorWindow window) {
                 window.ConfirmButtonPressed -= OnBookmarksEditorWindowConfirmButtonPressed;
@@ -802,12 +827,12 @@ namespace AudioPlayerWPF {
                 OpenNewSong(playlist.CurrentSong.FileUri);
                 UpdateViewModel();
                 if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
-                    nextTrackButton.IsEnabled = false;
+                    DisableNextTrackButton();
                 }
                 else {
-                    nextTrackButton.IsEnabled = true;
+                    EnableNextTrackButton();
                 }
-                prevTrackButton.IsEnabled = false;
+                DisablePrevTrackButton();
 
             }
         }
