@@ -682,14 +682,6 @@ namespace AudioPlayerWPF {
             UpdateSlider();
         }
 
-        private void SongSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            if (mediaPlayer != null && mediaPlayer.NaturalDuration.HasTimeSpan) {
-                TimeSpan t = TimeSpan.FromSeconds(SongSlider.Value);
-                mediaPlayer.Position = t;
-            }
-            UpdateSlider();
-        }
-
         // CANNOT USE  IsMoveToPointEnabled="True"  because it absorbs click events, and does not work properly due to the slider being updated every tick
         private void SongSlider_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             if (playlist != null && sender is Slider s) {

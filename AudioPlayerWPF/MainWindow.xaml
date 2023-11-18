@@ -20,6 +20,8 @@
         <SolidColorBrush x:Key="WindowBackground" Color="White" />
         <SolidColorBrush x:Key="FontColor" Color="Black" />
 
+        <classes:SecondsToTimeSpanConverter x:Key="SecondsToTimeSpanConverter" />
+
         <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
             <Setter Property="ItemsPanel">
                 <Setter.Value>
@@ -127,7 +129,7 @@
                 <TextBlock x:Name="artistBlock" DockPanel.Dock="Top" Text="{Binding CurrentArtist, UpdateSourceTrigger=PropertyChanged}" d:Text="Album artist goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,2,1,1" FontSize="10" FontFamily="Roboto" FontStyle="Italic" />
                 <StackPanel>
                     <DockPanel Margin="6,2,14,0">
-                        <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentSongPosition, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding ElementName=SongSlider, Path=Value, Converter={StaticResource SecondsToTimeSpanConverter}, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding TotalSongDuration, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>
                         <TextBlock Name="loadingBlock" Text="Loading..." FontStyle="Italic" HorizontalAlignment="Center" Visibility="Hidden"/>
                     </DockPanel>
