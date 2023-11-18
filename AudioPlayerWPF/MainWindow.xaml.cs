@@ -40,11 +40,6 @@ namespace AudioPlayerWPF {
         // general options
         private int tickSpeed = 500; // also in milliseconds
 
-        // References to UI elements
-        private Border? leftTrack;
-        private Border? backgroundTrack;
-        // private Thumb? trackThumb;
-
         // Constructors
 
         public MainWindow() {
@@ -293,11 +288,6 @@ namespace AudioPlayerWPF {
             if (mediaPlayer.NaturalDuration.HasTimeSpan && !userIsDraggingSlider) {
                 SongSlider.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 SongSlider.Value = mediaPlayer.Position.TotalSeconds;
-
-                if (leftTrack != null && backgroundTrack != null) {
-                    leftTrack.Width = backgroundTrack.ActualWidth * SongSlider.Value / SongSlider.Maximum;
-                }
-
                 songViewModel.CurrentSongPosition = mediaPlayer.Position;
             }
         }
@@ -706,11 +696,6 @@ namespace AudioPlayerWPF {
 
         // Window event handlers
         // / This window
-        private void WindowLoaded(object sender, RoutedEventArgs e) {
-            leftTrack = (Border)SongSlider.Template.FindName("LeftTrack", SongSlider);
-            backgroundTrack = (Border)SongSlider.Template.FindName("BackgroundTrack", SongSlider);
-            // trackThumb = (Thumb)SongSlider.Template.FindName("TrackThumb", SongSlider);
-        }
 
         // / Other windows
         private async void OnTrackInformationWindowConfirmButtonPressed(object sender, TrackInformationConfirmEventArgs e) {

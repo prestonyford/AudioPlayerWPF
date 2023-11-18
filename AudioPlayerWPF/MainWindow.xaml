@@ -13,8 +13,7 @@
         Height="200" Width="460"
         MinHeight="200" MinWidth="460"
         MaxHeight="256" MaxWidth="720"
-        Background="{DynamicResource WindowBackground}"
-        Loaded="WindowLoaded">
+        Background="{DynamicResource WindowBackground}">
 
     <!-- Height="220" Width="492" -->
     <Window.Resources>
