@@ -285,7 +285,7 @@ namespace AudioPlayerWPF {
         }
 
         private void UpdateSlider() {
-            if (mediaPlayer.NaturalDuration.HasTimeSpan && !userIsDraggingSlider) {
+            if (mediaPlayer.NaturalDuration.HasTimeSpan) {
                 SongSlider.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 SongSlider.Value = mediaPlayer.Position.TotalSeconds;
                 songViewModel.CurrentSongPosition = mediaPlayer.Position;
@@ -669,24 +669,43 @@ namespace AudioPlayerWPF {
 
         private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e) {
             userIsDraggingSlider = true;
+            PauseMusic();
         }
 
         private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e) {
             userIsDraggingSlider = false;
-            TimeSpan t = TimeSpan.FromSeconds(SongSlider.Value);
+            PlayMusic();
             if (mediaPlayer != null && mediaPlayer.NaturalDuration.HasTimeSpan) {
+                TimeSpan t = TimeSpan.FromSeconds(SongSlider.Value);
                 mediaPlayer.Position = t;
             }
             UpdateSlider();
         }
 
         private void SongSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            userIsDraggingSlider = false;
-            TimeSpan t = TimeSpan.FromSeconds(SongSlider.Value);
             if (mediaPlayer != null && mediaPlayer.NaturalDuration.HasTimeSpan) {
+                TimeSpan t = TimeSpan.FromSeconds(SongSlider.Value);
                 mediaPlayer.Position = t;
             }
             UpdateSlider();
+        }
+
+        // CANNOT USE  IsMoveToPointEnabled="True"  because it absorbs click events, and does not work properly due to the slider being updated every tick
+        private void SongSlider_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            if (playlist != null && sender is Slider s) {
+                Point mousePosition = e.GetPosition(s);
+                double thumbWidth = ((Track)SongSlider.Template.FindName("PART_Track", SongSlider)).Thumb.Width;
+
+                // Adjust for the thumb's width and any potential margins or padding
+                double newValPercent = (mousePosition.X - (thumbWidth / 2)) / (s.ActualWidth - thumbWidth);
+
+                // Ensure the value is within valid range [0, 1]
+                newValPercent = Math.Max(0, Math.Min(1, newValPercent));
+
+                double newSeconds = playlist.CurrentSong.Duration.TotalSeconds * newValPercent;
+                mediaPlayer.Position = TimeSpan.FromSeconds(newSeconds);
+                UpdateSlider();
+            }
         }
 
         private void ThumbButtonInfoPlayPause_Click(object sender, EventArgs e) {
@@ -846,6 +865,6 @@ namespace AudioPlayerWPF {
             }
         }
 
-        
+
     }
 }

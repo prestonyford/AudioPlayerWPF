@@ -133,7 +133,7 @@
                     </DockPanel>
 
 
-                    <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" IsMoveToPointEnabled="True" ValueChanged="SongSlider_ValueChanged">
+                    <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" PreviewMouseLeftButtonDown="SongSlider_PreviewMouseLeftButtonDown">
                         <Slider.Template>
                             <ControlTemplate TargetType="Slider">
                                 <Grid Height="10px" Margin="0px 2px 0px 4px">
