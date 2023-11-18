@@ -9,8 +9,8 @@
         Title="Song Options"
         Height="400" Width="412"
         MinHeight="400" MinWidth="360"
-        Closing="Window_Closing">
-    <!-- Background="#F0F0F0" -->
+        Closing="Window_Closing"
+        Background="White">
     <Grid>
         <DockPanel>
             <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom">

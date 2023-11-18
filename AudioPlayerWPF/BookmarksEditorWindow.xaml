@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AudioPlayerWPF"
         xmlns:classes="clr-namespace:AudioPlayerWPF.Classes"
         mc:Ignorable="d"
-        Background="#F0F0F0"
+        Background="White"
         Title="Edit Bookmarks"
         Height="320" Width="412" 
         MinHeight="320" MinWidth="412"

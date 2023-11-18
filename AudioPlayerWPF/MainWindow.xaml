@@ -13,7 +13,8 @@
         Height="200" Width="460"
         MinHeight="200" MinWidth="460"
         MaxHeight="256" MaxWidth="720"
-        Background="{DynamicResource WindowBackground}">
+        Background="{DynamicResource WindowBackground}"
+        Loaded="WindowLoaded">
 
     <!-- Height="220" Width="492" -->
     <Window.Resources>
@@ -121,7 +122,7 @@
         <DockPanel Margin="0,0,0,0" Grid.Row="1">
             <Separator DockPanel.Dock="Top" Margin="0,0,0,0" Height="1" Background="#F0F0F0"/>
             <Grid Height="Auto" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
-                <Image Name="coverArtImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding CurrentAlbumArt, UpdateSourceTrigger=PropertyChanged}" d:Source="/Images/noimg.jpg" Margin="0" AllowDrop="True" DragEnter="MainFileDragEnter" Drop="MainFileDrop"/>
+                <Image Name="coverArtImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding CurrentAlbumArt, UpdateSourceTrigger=PropertyChanged}" d:Source="/Images/icons8-audio-wave.png" Margin="0" AllowDrop="True" DragEnter="MainFileDragEnter" Drop="MainFileDrop"/>
             </Grid>
             <DockPanel Margin="6,0,0,0" HorizontalAlignment="Stretch">
                 <TextBlock x:Name="titleBlock" DockPanel.Dock="Top" Text="{Binding CurrentSongTitle, UpdateSourceTrigger=PropertyChanged}" d:Text="Title goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,4,1,1" FontSize="20" FontFamily="Roboto" FontWeight="Bold" />
@@ -138,25 +139,44 @@
                     <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted">
                         <Slider.Template>
                             <ControlTemplate TargetType="Slider">
-                                <Grid Height="10px" Margin="0px 2px 0px 4px">
-                                    <Border Background="LightGray" CornerRadius="4"/>
+                                <Grid Height="10px" Margin="5px 2px 5px 4px">
 
-                                    <!-- Left side of the thumb -->
-                                    <Border Name="LeftTrack" HorizontalAlignment="Left" Background="#0883D9">
-                                        <Border.CornerRadius>
-                                            <CornerRadius TopLeft="4" TopRight="0" BottomRight="0" BottomLeft="4"/>
-                                        </Border.CornerRadius>
-                                    </Border>
-
+                                    <Border x:Name="BackgroundTrack" Background="LightGray" CornerRadius="4"/>
                                     <!-- Thumb -->
-                                    <Thumb Name="TrackThumb" Width="10px" HorizontalAlignment="Left" Margin="{Binding ElementName=LeftTrack, Path=ActualWidth, Converter={StaticResource DoubleToMarginLeftConverter}, ConverterParameter=5}">
-                                        <Thumb.Style>
-                                            <Style>
+                                    <Track x:Name="PART_Track">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton>
+                                                <RepeatButton.Template>
+                                                    <ControlTemplate>
+                                                        <Border SnapsToDevicePixels="True" Background="#0883D9" Height="10">
+                                                            <Border.CornerRadius>
+                                                                <CornerRadius TopLeft="4" BottomLeft="4"/>
+                                                            </Border.CornerRadius>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </RepeatButton.Template>
+                                            </RepeatButton>
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb Width="10px" Height="10px" Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Left">
 
-                                            </Style>
-                                        </Thumb.Style>
-                                    </Thumb>
-
+                                            </Thumb>
+                                        </Track.Thumb>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton>
+                                                <RepeatButton.Template>
+                                                    <ControlTemplate>
+                                                        <Border SnapsToDevicePixels="True" Background="LightGray" Height="10">
+                                                            <Border.CornerRadius>
+                                                                <CornerRadius TopRight="4" BottomRight="4"/>
+                                                            </Border.CornerRadius>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </RepeatButton.Template>
+                                            </RepeatButton>
+                                        </Track.IncreaseRepeatButton>
+                                    </Track>
+                                    
                                 </Grid>
                             </ControlTemplate>
                         </Slider.Template>

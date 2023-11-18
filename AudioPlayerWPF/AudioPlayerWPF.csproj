@@ -12,6 +12,8 @@
     <None Remove="Images\fast-forward.png" />
     <None Remove="Images\forward-10.png" />
     <None Remove="Images\icons8-add-bookmark-48.png" />
+    <None Remove="Images\icons8-audio-wave-96.png" />
+    <None Remove="Images\icons8-audio-wave.png" />
     <None Remove="Images\icons8-bookmark-48.png" />
     <None Remove="Images\icons8-bookmark-book-48.png" />
     <None Remove="Images\icons8-close-48.png" />
@@ -52,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\icons8-audio-wave.png" />
     <Resource Include="Images\icons8-bookmark-48.png" />
     <Resource Include="Images\icons8-bookmark-book-48.png" />
     <Resource Include="Images\icons8-close-48.png" />

@@ -31,8 +31,8 @@ namespace AudioPlayerWPF.Classes {
     public class DoubleToMarginLeftConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             if (value is double offset) {
-                if (parameter is double par) {
-                    offset += par;
+                if (parameter is string par) {
+                    offset += double.Parse(par);
                 }
                 return new Thickness(offset, 0, 0, 0);
             }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AudioPlayerWPF"
         mc:Ignorable="d"
-        Background="#F0F0F0"
+        Background="White"
         Title="Track Information"
         Height="340" Width="436" 
         MinHeight="310" MinWidth="412"
