@@ -136,10 +136,10 @@
                     </DockPanel>
 
 
-                    <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted">
+                    <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" IsMoveToPointEnabled="True" ValueChanged="SongSlider_ValueChanged">
                         <Slider.Template>
                             <ControlTemplate TargetType="Slider">
-                                <Grid Height="10px" Margin="5px 2px 5px 4px">
+                                <Grid Height="10px" Margin="0px 2px 0px 4px">
 
                                     <Border x:Name="BackgroundTrack" Background="LightGray" CornerRadius="4"/>
                                     <!-- Thumb -->
@@ -148,7 +148,7 @@
                                             <RepeatButton>
                                                 <RepeatButton.Template>
                                                     <ControlTemplate>
-                                                        <Border SnapsToDevicePixels="True" Background="#0883D9" Height="10">
+                                                        <Border SnapsToDevicePixels="True" Background="#0883D9" Height="10" Margin="0,0,-4,0">
                                                             <Border.CornerRadius>
                                                                 <CornerRadius TopLeft="4" BottomLeft="4"/>
                                                             </Border.CornerRadius>
@@ -158,8 +158,14 @@
                                             </RepeatButton>
                                         </Track.DecreaseRepeatButton>
                                         <Track.Thumb>
-                                            <Thumb Width="10px" Height="10px" Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Left">
-
+                                            <Thumb Width="14px" Height="10px" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                <Thumb.Template>
+                                                    <ControlTemplate>
+                                                        <Canvas VerticalAlignment="Center" Height="14px">
+                                                            <Image Source="/Images/icons8-toggle-indeterminate.png" Width="14px" Height="14px"/>
+                                                        </Canvas>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
                                             </Thumb>
                                         </Track.Thumb>
                                         <Track.IncreaseRepeatButton>

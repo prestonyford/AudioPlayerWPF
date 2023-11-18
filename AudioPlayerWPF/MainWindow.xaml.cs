@@ -690,6 +690,15 @@ namespace AudioPlayerWPF {
             UpdateSlider();
         }
 
+        private void SongSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+            userIsDraggingSlider = false;
+            TimeSpan t = TimeSpan.FromSeconds(SongSlider.Value);
+            if (mediaPlayer != null && mediaPlayer.NaturalDuration.HasTimeSpan) {
+                mediaPlayer.Position = t;
+            }
+            UpdateSlider();
+        }
+
         private void ThumbButtonInfoPlayPause_Click(object sender, EventArgs e) {
             TogglePausePlay();
             UpdatePlayButton();
@@ -852,5 +861,6 @@ namespace AudioPlayerWPF {
             }
         }
 
+        
     }
 }

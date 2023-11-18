@@ -41,6 +41,9 @@
     <None Remove="Images\icons8-shuffle-48.png" />
     <None Remove="Images\icons8-smart-playlist-48.png" />
     <None Remove="Images\icons8-sorting-arrows-horizontal-48.png" />
+    <None Remove="Images\icons8-toggle-indeterminate-48.png" />
+    <None Remove="Images\icons8-toggle-indeterminate-96.png" />
+    <None Remove="Images\icons8-toggle-indeterminate.png" />
     <None Remove="Images\noimg.jpg" />
     <None Remove="Images\pause.png" />
     <None Remove="Images\play.png" />
@@ -78,6 +81,7 @@
     <Resource Include="Images\icons8-sheet-music-48.png" />
     <Resource Include="Images\icons8-shuffle-48.png" />
     <Resource Include="Images\icons8-smart-playlist-48.png" />
+    <Resource Include="Images\icons8-toggle-indeterminate.png" />
     <Resource Include="Images\noimg.jpg" />
   </ItemGroup>
 
