@@ -40,6 +40,9 @@ namespace AudioPlayerWPF {
         // general options
         private int tickSpeed = 500; // also in milliseconds
 
+        // Misc
+        private bool beforeDragSongPlaying = false;
+
         // Constructors
 
         public MainWindow() {
@@ -669,17 +672,27 @@ namespace AudioPlayerWPF {
 
         private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e) {
             userIsDraggingSlider = true;
-            PauseMusic();
+            if (musicIsPlaying) {
+                beforeDragSongPlaying = true;
+                PauseMusic();
+            }
+            else {
+                beforeDragSongPlaying = false;
+            }
         }
 
         private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e) {
             userIsDraggingSlider = false;
-            PlayMusic();
             if (mediaPlayer != null && mediaPlayer.NaturalDuration.HasTimeSpan) {
                 TimeSpan t = TimeSpan.FromSeconds(SongSlider.Value);
                 mediaPlayer.Position = t;
             }
+
+            if (beforeDragSongPlaying) {
+                PlayMusic();
+            }
             UpdateSlider();
+            UpdatePlayButton();
         }
 
         // CANNOT USE  IsMoveToPointEnabled="True"  because it absorbs click events, and does not work properly due to the slider being updated every tick
