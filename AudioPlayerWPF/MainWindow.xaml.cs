@@ -138,6 +138,13 @@ namespace AudioPlayerWPF {
                         return;
                     }
                     playlist = new Playlist(name, songs);
+
+                    // if Shuffle is enabled, randomize
+                    if (shuffle) {
+                        Random random = new Random();
+                        int newIndex = random.Next(0, playlist.Songs.Count);
+                        playlist.CurrentSongIdx = newIndex;
+                    }
                     OpenNewSong(playlist.CurrentSong.FileUri);
                     UpdateViewModel();
                     if (playlist.CurrentSongIdx == 0) DisablePrevTrackButton();
