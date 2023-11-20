@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows.Media.Imaging;
 using TagLib;
 
 namespace AudioPlayerWPF.Classes
 {
     public class Song {
-        private TagLib.File audioFile;
+        private TagLib.File? tagFile;
         private Uri fileUri;
 
         // FOR JSON USE
@@ -15,26 +16,42 @@ namespace AudioPlayerWPF.Classes
 
         public Song(Uri uri) {
             fileUri = uri;
-            audioFile = TagLib.File.Create(uri.LocalPath.ToString());
-        }
-        public Song(string uri) {
-            fileUri = new Uri(uri);
-            audioFile = TagLib.File.Create(fileUri.LocalPath.ToString());
+            
         }
         ~Song() {
             Console.WriteLine($"Disposing tags for: {FileName}");
-            audioFile.Dispose();
+            if (tagFile != null ) {
+                tagFile.Dispose();
+            }
+        }
+
+        // Helpers
+        private TagLib.File createTag() {
+            tagFile = TagLib.File.Create(fileUri.LocalPath.ToString());
+            return tagFile;
         }
 
         // Properties
 
         public Uri FileUri { get { return fileUri; } }
-        public TagLib.File TagLibFile { get { return audioFile; } }
-        public string? Title { get { return audioFile.Tag.Title; } }
+        public TagLib.File TagLibFile {
+            get {
+                if (tagFile == null) {
+                    return createTag();
+                }
+                return tagFile;
+            }
+        }
 
         public BitmapImage? CoverArt {
             get {
-                IPicture? tagAlbumArt = audioFile.Tag.Pictures.FirstOrDefault();
+                if (tagFile == null) {
+                    createTag();
+                }
+                if (tagFile == null) {
+                    return null;
+                }
+                IPicture? tagAlbumArt = tagFile.Tag.Pictures.FirstOrDefault();
                 if (tagAlbumArt != null) {
                     MemoryStream ms = new MemoryStream(tagAlbumArt.Data.Data);
                     BitmapImage bitmapImage = new BitmapImage();
@@ -47,19 +64,9 @@ namespace AudioPlayerWPF.Classes
                 return null;
             }
         }
-        public string? Album { get { return audioFile.Tag.Album; } }
-        public string? Artist { get { return string.Join(", ", audioFile.Tag.Performers); } }
-
-        public string? AlbumArtist { get { return string.Join(", ", audioFile.Tag.AlbumArtists); } }
-        public TimeSpan Duration { get { return audioFile.Properties.Duration; } }
 
         public string FileUriString { get { return fileUri.LocalPath.ToString(); } }
         public string FileName { get { return System.IO.Path.GetFileName(fileUri.LocalPath); } }
 
-        // 
-
-        public override string ToString() {
-            return "test!";
-        }
     }
 }

@@ -18,6 +18,7 @@ namespace AudioPlayerWPF.ViewModels
             currentSongTitle = "No song loaded";
             currentAlbum = "n/a";
             currentArtist = "n/a";
+            currentAlbumArtist = "n/a";
             totalSongDuration = TimeSpan.Zero;
             currentSongPosition = TimeSpan.Zero;
             currentAlbumArt = App.noimgImage;

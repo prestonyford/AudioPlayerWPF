@@ -83,14 +83,14 @@ namespace AudioPlayerWPF {
         private void AddFile(string filePath) {
             Song? song = new Song(new Uri(filePath));
             string title;
-            if (song.Title != null) {
-                title = song.Title;
+            if (song.TagLibFile.Tag.Title != null) {
+                title = song.TagLibFile.Tag.Title;
             }
             else {
                 title = "";
             }
 
-            PlaylistItemDTO item = new PlaylistItemDTO(title, song.FileUriString, song.FileName, song.Duration.TotalSeconds); // Passing these by reference may keep the song object alive (bad)
+            PlaylistItemDTO item = new PlaylistItemDTO(title, song.FileUriString, song.FileName, song.TagLibFile.Properties.Duration.TotalSeconds); // Passing these by reference may keep the song object alive (bad)
             if (!songNoDuplicates.Contains(filePath)) {
                 songCollection.AddLast(item);
                 songNoDuplicates.Add(filePath);

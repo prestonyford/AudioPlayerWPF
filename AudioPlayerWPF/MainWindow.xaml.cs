@@ -129,10 +129,11 @@ namespace AudioPlayerWPF {
                 // Play playlist button
                 RoutedEventHandler? playLambda = null;
                 playLambda = (object sender, RoutedEventArgs e) => {
+                    loadingBlock.Visibility = Visibility.Visible;
                     List<Song> songs = new List<Song>();
                     foreach (PlaylistItemDTO item in playlistJson.Songs) {
                         if (SongExists(item.FilePath)) {
-                            songs.Add(new Song(item.FilePath));
+                            songs.Add(new Song(new Uri(item.FilePath)));
                         }
                     }
                     if (songs.Count == 0) {
@@ -173,10 +174,11 @@ namespace AudioPlayerWPF {
 
                     int j = i;
                     RoutedEventHandler songHandler = (object sender, RoutedEventArgs e) => {
+                        loadingBlock.Visibility = Visibility.Visible;
                         List<Song> songs = new List<Song>();
                         foreach (PlaylistItemDTO item in playlistJson.Songs) {
                             if (SongExists(item.FilePath)) {
-                                songs.Add(new Song(item.FilePath));
+                                songs.Add(new Song(new Uri(item.FilePath)));
                             }
                             else {
                                 return;
@@ -250,11 +252,11 @@ namespace AudioPlayerWPF {
         private void UpdateViewModel() {
             if (playlist == null) { return; }
             Song song = playlist.CurrentSong;
-            if (song.Title == null) {
+            if (song.TagLibFile.Tag.Title == null) {
                 songViewModel.CurrentSongTitle = System.IO.Path.GetFileNameWithoutExtension(song.FileUri.LocalPath); // Excludes path and file extension
             }
             else {
-                songViewModel.CurrentSongTitle = song.Title;
+                songViewModel.CurrentSongTitle = song.TagLibFile.Tag.Title;
             }
             if (song.CoverArt == null) {
                 songViewModel.CurrentAlbumArt = App.noimgImage;
@@ -262,25 +264,25 @@ namespace AudioPlayerWPF {
             else {
                 songViewModel.CurrentAlbumArt = song.CoverArt;
             }
-            if (song.Album == null) {
+            if (song.TagLibFile.Tag.Album == null) {
                 songViewModel.CurrentAlbum = "n/a";
             }
             else {
-                songViewModel.CurrentAlbum = song.Album;
+                songViewModel.CurrentAlbum = song.TagLibFile.Tag.Album;
             }
-            if (song.Artist == null || song.Artist == "") {
+            if (song.TagLibFile.Tag.FirstPerformer == null || song.TagLibFile.Tag.FirstPerformer == "") {
                 songViewModel.CurrentArtist = "n/a";
             }
             else {
-                songViewModel.CurrentArtist = song.Artist;
+                songViewModel.CurrentArtist = song.TagLibFile.Tag.FirstPerformer;
             }
-            if (song.AlbumArtist == null || song.AlbumArtist == "") {
+            if (song.TagLibFile.Tag.FirstAlbumArtist == null || song.TagLibFile.Tag.FirstAlbumArtist == "") {
                 songViewModel.CurrentArtist = "n/a";
             }
             else {
-                songViewModel.CurrentArtist = song.AlbumArtist;
+                songViewModel.CurrentArtist = song.TagLibFile.Tag.FirstAlbumArtist;
             }
-            songViewModel.TotalSongDuration = song.Duration;
+            songViewModel.TotalSongDuration = song.TagLibFile.Properties.Duration;
         }
 
         private void UpdateSlider() {
@@ -406,8 +408,8 @@ namespace AudioPlayerWPF {
             if (playlist != null) {
                 Song song = playlist.CurrentSong;
                 string name;
-                if (song.Title != null) {
-                    name = song.Title;
+                if (song.TagLibFile.Tag.Title != null) {
+                    name = song.TagLibFile.Tag.Title;
                 }
                 else {
                     name = songViewModel.CurrentSongTitle = System.IO.Path.GetFileNameWithoutExtension(song.FileUri.LocalPath);
@@ -526,8 +528,8 @@ namespace AudioPlayerWPF {
                 return;
             }
             Song song = playlist.CurrentSong;
-            if (song.Title != null) {
-                name = song.Title;
+            if (song.TagLibFile.Tag.Title != null) {
+                name = song.TagLibFile.Tag.Title;
             }
             else {
                 name = songViewModel.CurrentSongTitle = System.IO.Path.GetFileNameWithoutExtension(song.FileUri.LocalPath);
@@ -544,8 +546,8 @@ namespace AudioPlayerWPF {
                 return;
             }
             Song song = playlist.CurrentSong;
-            if (song.Title != null) {
-                name = song.Title;
+            if (song.TagLibFile.Tag.Title != null) {
+                name = song.TagLibFile.Tag.Title;
             }
             else {
                 name = songViewModel.CurrentSongTitle = System.IO.Path.GetFileNameWithoutExtension(song.FileUri.LocalPath);
@@ -654,7 +656,7 @@ namespace AudioPlayerWPF {
                 // Ensure the value is within valid range [0, 1]
                 newValPercent = Math.Max(0, Math.Min(1, newValPercent));
 
-                double newSeconds = playlist.CurrentSong.Duration.TotalSeconds * newValPercent;
+                double newSeconds = playlist.CurrentSong.TagLibFile.Properties.Duration.TotalSeconds * newValPercent;
                 mediaPlayer.Position = TimeSpan.FromSeconds(newSeconds);
                 UpdateSlider();
             }
