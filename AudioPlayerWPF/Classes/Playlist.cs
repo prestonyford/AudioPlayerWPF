@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AudioPlayerWPF.Classes
 {
@@ -6,6 +7,8 @@ namespace AudioPlayerWPF.Classes
         private string name;
         private List<Song> songs;
         private int currentSongIdx;
+        private bool repeat = false;
+        private bool shuffle = false;
 
         public Playlist() {
             name = "Unnamed empty playlist";
@@ -22,13 +25,71 @@ namespace AudioPlayerWPF.Classes
             currentSongIdx = 0;
         }
 
-        // Properties
+        // Methods
+        public void ResetPlaylist(string name, List<Song> songs) {
+            this.name = name;
+            this.songs = songs;
+            currentSongIdx = 0;
+        }
+        public bool NextSongExists(bool ignoreRepeat = false) {
+            if (shuffle || (repeat && !ignoreRepeat)) { return true; }
+            else {
+                return currentSongIdx != songs.Count - 1;
+            }
+        }
+        public bool PreviousSongExists() {
+            return currentSongIdx != 0;
+        }
+        public Song? GoNextSong(bool ignoreRepeat = false) {
+            if (!ignoreRepeat && repeat) {
+                return songs[currentSongIdx];
+            }
+            else if (shuffle) {
+                return Randomize(true);
+            }
+            else if (currentSongIdx == songs.Count - 1) {
+                return null;
+            }
+            else {
+                ++currentSongIdx;
+            }
+            return songs[currentSongIdx];
+        }
+        public Song GoPrevSong() {
+            if (currentSongIdx > 0) {
+                --currentSongIdx;
+            }
+            return songs[currentSongIdx];
+        }
+        public Song Randomize(bool excludeCurrent = false) {
+            Random random = new Random();
+            int newIndex;
 
-        public string Name { get { return name; } }
+            // Prevent playing the same song twice in a row
+            if (excludeCurrent == true && songs.Count > 1) {
+                int excludedNumber = currentSongIdx;
+                newIndex = random.Next(0, songs.Count - 1);
+                if (newIndex >= excludedNumber) {
+                    ++newIndex;
+                }
+            }
+            // Or purely randomize (possibly the same song again)
+            else {
+                newIndex = random.Next(0, songs.Count);
+            }
+            currentSongIdx = newIndex;
+
+            return songs[currentSongIdx];
+        }
+
+        // Properties
+        public string Name { get { return name; } set { name = value; } }
         public List<Song> Songs { get { return songs; } set { songs = value; } }
         public int CurrentSongIdx { get {  return currentSongIdx; } set { currentSongIdx = value; } }
         public Song CurrentSong {
             get { return songs[currentSongIdx]; }
         }
+        public bool Repeat { get { return repeat; } set { repeat = value; } }
+        public bool Shuffle { get { return shuffle; } set {  shuffle = value; } }
     }
 }

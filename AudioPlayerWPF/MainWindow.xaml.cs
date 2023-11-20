@@ -11,20 +11,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.IO;
 using System.Text.Json;
-using System.DirectoryServices.ActiveDirectory;
 using System.Windows.Controls.Primitives;
+
+// Ctrl + M + O to collapse all (L to expand all)
 
 namespace AudioPlayerWPF {
     public partial class MainWindow : Window {
         private SongViewModel songViewModel;
         private MediaPlayer mediaPlayer;
         private DispatcherTimer timer;
-        private Playlist? playlist;
+        private Playlist playlist;
 
         private bool userIsDraggingSlider = false;
         private bool musicIsPlaying = false;
-        private bool repeat = false;
-        private bool shuffle = false;
+
         private static readonly BitmapImage pauseImage = new BitmapImage(new Uri("/Images/icons8-pause-48.png", UriKind.Relative));
         private static readonly BitmapImage playImage = new BitmapImage(new Uri("/Images/icons8-play-48.png", UriKind.Relative));
 
@@ -67,6 +67,8 @@ namespace AudioPlayerWPF {
                 playlistMenu.Items.Add(newMenuItem);
                 playlistMenuItemsDictionary.Add(name, newMenuItem);
             }
+
+            playlist = new Playlist();
 
             DisablePrevTrackButton();
             DisableNextTrackButton();
@@ -137,20 +139,11 @@ namespace AudioPlayerWPF {
                         MessageBox.Show("The selected playlist is empty.", "Error Occured!", MessageBoxButton.OK, MessageBoxImage.Information);
                         return;
                     }
-                    playlist = new Playlist(name, songs);
-
-                    // if Shuffle is enabled, randomize
-                    if (shuffle) {
-                        Random random = new Random();
-                        int newIndex = random.Next(0, playlist.Songs.Count);
-                        playlist.CurrentSongIdx = newIndex;
+                    playlist.ResetPlaylist(playlistJson.Name, songs);
+                    if (playlist.Shuffle == true) {
+                        playlist.Randomize();
                     }
-                    OpenNewSong(playlist.CurrentSong.FileUri);
-                    UpdateViewModel();
-                    if (playlist.CurrentSongIdx == 0) DisablePrevTrackButton();
-                    else EnablePrevTrackButton();
-                    if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) DisableNextTrackButton();
-                    else EnableNextTrackButton();
+                    MediaPlayerOpenNewSong(playlist.CurrentSong);
                 };
                 playMenuItem.Click += playLambda;
 
@@ -193,14 +186,11 @@ namespace AudioPlayerWPF {
                             MessageBox.Show("The selected playlist is empty.", "Error Occured!", MessageBoxButton.OK, MessageBoxImage.Information);
                             return;
                         }
-                        playlist = new Playlist(name, songs);
+                        playlist.ResetPlaylist(name, songs);
                         playlist.CurrentSongIdx = j;
-                        OpenNewSong(playlist.Songs[j].FileUri);
+                        MediaPlayerOpenNewSong(playlist.CurrentSong);
                         UpdateViewModel();
-                        if (playlist.CurrentSongIdx == 0) DisablePrevTrackButton();
-                        else EnablePrevTrackButton();
-                        if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) DisableNextTrackButton();
-                        else EnableNextTrackButton();
+                        UpdateTrackButtons();
                     };
                     songMenuItem.Click += songHandler;
                     songButtonsToHandlers.Add(songMenuItem, songHandler);
@@ -228,7 +218,6 @@ namespace AudioPlayerWPF {
                     }
                 };
                 deleteMenuItem.Click += deleteLambda;
-
             }
             catch (Exception ex) {
                 MessageBox.Show("Error reading playlist file: " + ex.Message, "Exception Occured!", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -315,6 +304,22 @@ namespace AudioPlayerWPF {
             }
         }
 
+        private void UpdateTrackButtons() {
+            if (playlist.NextSongExists(true)) {
+                EnableNextTrackButton();
+            }
+            else {
+                DisableNextTrackButton();
+            }
+            
+            if (playlist.PreviousSongExists()) {
+                EnablePrevTrackButton();
+            }
+            else {
+                DisablePrevTrackButton();
+            }
+        }
+
         private void PlayMusic() {
             loadingBlock.Visibility = Visibility.Hidden;
             mediaPlayer.Play();
@@ -335,60 +340,32 @@ namespace AudioPlayerWPF {
             else {
                 PlayMusic();
             }
+            UpdatePlayButton();
         }
 
-        private void OpenNewSong(Uri uri) { // This should always follow updating the playlist
+        private void MediaPlayerOpenNewSong(Song? song) { // This should always follow updating the playlist
+            if (song == null) {
+                PauseMusic();
+                UpdatePlayButton();
+                mediaPlayer.Position = TimeSpan.Zero;
+                return;
+            }
+
+            Uri uri = song.FileUri;
             if (mediaPlayer.Source != uri) { // If the source is the same, MediaOpened will never fire, and the loading block will never get hidden
                 loadingBlock.Visibility = Visibility.Visible;
-
                 LoadOptions();
             }
 
             string filestr = uri.OriginalString;
             if (SongExists(filestr)) {
+                ClearBookmarks();
                 mediaPlayer.Open(uri);
             }
-        }
-
-        private void GoNextTrack() {
-            if (playlist == null) { return; }
-
-            if (shuffle == true && playlist.Songs.Count > 1) {
-                Random random = new Random();
-                // Prevent playing the same song twice in a row
-                int excludedNumber = playlist.CurrentSongIdx;
-                int newIndex = random.Next(0, playlist.Songs.Count - 1);
-                if (newIndex >= excludedNumber) {
-                    ++newIndex;
-                }
-                playlist.CurrentSongIdx = newIndex;
-            }
-            else if (playlist.Songs.Count == 1) {
-                PlayMusic();
-            }
-            else {
-                ++playlist.CurrentSongIdx;
-                if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
-                    DisableNextTrackButton();
-                }
-                EnablePrevTrackButton();
-            }
-            OpenNewSong(playlist.CurrentSong.FileUri);
+            UpdateTrackButtons();
             UpdateViewModel();
-        }
-
-        private void GoPrevTrack() {
-            if (playlist == null) {
-                DisablePrevTrackButton();
-                return;
-            }
-            OpenNewSong(playlist.Songs[--playlist.CurrentSongIdx].FileUri);
-            UpdateViewModel();
-
-            if (playlist.CurrentSongIdx == 0) {
-                DisablePrevTrackButton();
-            }
-            EnableNextTrackButton();
+            UpdateSlider();
+            UpdatePlayButton();
         }
 
         private void LoadBookmarks() {
@@ -483,17 +460,7 @@ namespace AudioPlayerWPF {
         // Media event handlers
 
         private void OnMediaEnded(object? sender, EventArgs e) {
-            if (repeat) { // Repeat song
-                mediaPlayer.Position = TimeSpan.FromMilliseconds(startingPos);
-            }
-            else if (shuffle == true || (playlist != null && playlist.CurrentSongIdx < playlist.Songs.Count - 1)) { // Go next song
-                GoNextTrack();
-            }
-            else { // Stop song and stay put
-                PauseMusic();
-                UpdatePlayButton();
-                mediaPlayer.Position = TimeSpan.FromMilliseconds(startingPos);
-            }
+            MediaPlayerOpenNewSong(playlist.GoNextSong());
         }
 
         private void OnMediaOpened(object? sender, EventArgs e) {
@@ -501,32 +468,16 @@ namespace AudioPlayerWPF {
             menuTrackInformation.IsEnabled = true;
             menuEditBookmarks.IsEnabled = true;
             menuSongOptions.IsEnabled = true;
-            ClearBookmarks();
+
             LoadBookmarks();
             mediaPlayer.Position = TimeSpan.FromMilliseconds(startingPos);
+
             PlayMusic();
             UpdatePlayButton();
         }
 
         private void Timer_Tick(object? sender, EventArgs e) {
             UpdateSlider();
-
-            // Check if past ending pos, and end or continue accordingly
-            double diff = endingPos - mediaPlayer.Position.TotalMilliseconds;
-            if (endingPos != 0 && diff <= 1 && diff >= -1 * tickSpeed) {
-                if (repeat) { // Repeat song
-                    mediaPlayer.Position = TimeSpan.FromMilliseconds(startingPos);
-                }
-                else if (playlist != null && playlist.CurrentSongIdx < playlist.Songs.Count - 1) { // Go next song
-                    PauseMusic();
-                    GoNextTrack();
-                }
-                else { // Stop song and stay put
-                    PauseMusic();
-                    UpdatePlayButton();
-                    mediaPlayer.Position = TimeSpan.FromMilliseconds(startingPos);
-                }
-            }
         }
 
         // Menu bar event handlers
@@ -542,18 +493,8 @@ namespace AudioPlayerWPF {
                 foreach (string filename in openFileDialog.FileNames) {
                     songs.Add(new Song(new Uri(filename)));
                 }
-                playlist = new Playlist("Untitled playlist", songs);
-                OpenNewSong(playlist.CurrentSong.FileUri); // FileName includes path
-                //Console.WriteLine(playlist.CurrentSong.FileUri.ToString);
-                // song.ViewModel.CurrentSongTitle = openFileDialog.SafeFileName; // SafeFileName excludes path
-                UpdateViewModel();
-                if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
-                    DisableNextTrackButton();
-                }
-                else {
-                    EnableNextTrackButton();
-                }
-                DisablePrevTrackButton();
+                playlist.ResetPlaylist("Untitled playlist", songs);
+                MediaPlayerOpenNewSong(playlist.CurrentSong); // FileName includes path
             }
 
         }
@@ -564,10 +505,10 @@ namespace AudioPlayerWPF {
 
         private void RepeatToggleButton_Click(object sender, RoutedEventArgs e) {
             if (menuRepeat.IsChecked) {
-                repeat = true;
+                playlist.Repeat = true;
             }
             else {
-                repeat = false;
+                playlist.Repeat = false;
             }
         }
 
@@ -615,7 +556,7 @@ namespace AudioPlayerWPF {
         }
 
         private void ShuffleToggleButton_Click(object sender, RoutedEventArgs e) {
-            shuffle = !shuffle;
+            playlist.Shuffle = !playlist.Shuffle;
             if (playlist != null) {
                 if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
                     DisableNextTrackButton();
@@ -650,7 +591,6 @@ namespace AudioPlayerWPF {
 
         private void PlayButton_Click(object sender, RoutedEventArgs? e) {
             TogglePausePlay();
-            UpdatePlayButton();
         }
 
         private void SeekBackButton_Click(object sender, RoutedEventArgs e) {
@@ -670,11 +610,11 @@ namespace AudioPlayerWPF {
         }
 
         private void PrevTrackButton_Click(object sender, RoutedEventArgs e) {
-            GoPrevTrack();
+            MediaPlayerOpenNewSong(playlist.GoPrevSong());
         }
 
         private void NextTrackButton_Click(object sender, RoutedEventArgs e) {
-            GoNextTrack();
+            MediaPlayerOpenNewSong(playlist.GoNextSong());
         }
 
         private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e) {
@@ -768,7 +708,7 @@ namespace AudioPlayerWPF {
                     };
                     mediaPlayer.MediaOpened += seekToPriorSpot;
                     UpdateViewModel();
-                    OpenNewSong(tempUri);
+                    MediaPlayerOpenNewSong(song);
                     PlayMusic();
 
                 }
@@ -863,8 +803,8 @@ namespace AudioPlayerWPF {
                 foreach (string file in files) {
                     songs.Add(new Song(new Uri(file)));
                 }
-                playlist = new Playlist("Untitled playlist", songs);
-                OpenNewSong(playlist.CurrentSong.FileUri);
+                playlist.ResetPlaylist("Untitled playlist", songs);
+                MediaPlayerOpenNewSong(playlist.CurrentSong);
                 UpdateViewModel();
                 if (playlist.CurrentSongIdx == playlist.Songs.Count - 1) {
                     DisableNextTrackButton();
