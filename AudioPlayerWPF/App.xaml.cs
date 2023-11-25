@@ -11,6 +11,8 @@ namespace AudioPlayerWPF {
     public partial class App : Application {
 
         // Static stuff
+        public static readonly BitmapImage windowCloseIcon = new BitmapImage(new Uri("/Images/icons8-close-gray-48.png", UriKind.Relative));
+        public static readonly BitmapImage windowMinimizeIcon = new BitmapImage(new Uri("/Images/icons8-minimize-gray-48.png", UriKind.Relative));
         public static readonly BitmapImage noimgImage = new BitmapImage(new Uri("/Images/icons8-audio-wave.png", UriKind.Relative));
         public static readonly string userSubdirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AudioPlayerWPF");
         public static readonly string playlistsDirectory = Path.Combine(userSubdirectory, "playlists");

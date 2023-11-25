@@ -10,27 +10,19 @@
         
         mc:Ignorable="d"
         Title="AudioPlayerWPF"
-        Height="200" Width="460"
-        MinHeight="200" MinWidth="460"
+        Height="184" Width="460"
+        MinHeight="184" MinWidth="460"
         MaxHeight="256" MaxWidth="720"
-        Background="{DynamicResource WindowBackground}">
+        WindowStyle="None"
+        >
 
-    <!-- Height="220" Width="492" -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="1" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
     <Window.Resources>
-        <SolidColorBrush x:Key="WindowBackground" Color="White" />
         <SolidColorBrush x:Key="FontColor" Color="Black" />
 
         <classes:SecondsToTimeSpanConverter x:Key="SecondsToTimeSpanConverter" />
-
-        <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <StackPanel Margin="-20,0,0,0" Background="White"/>
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
@@ -47,101 +39,117 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" FlowDirection="LeftToRight" Background="White">
-            <MenuItem Header="_File">
-                <MenuItem Header="_Open" Click="MenuOpen_Click">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-folder-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-                <MenuItem Header="_Exit" Click="MenuExit_Click">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-close-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="_Song" Name="songMenu">
-                <MenuItem x:Name="menuRepeat" Click="RepeatToggleButton_Click" Header="Repeat" IsCheckable="True">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-repeat-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <!--<MenuItem Header="Jump to time">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-sorting-arrows-horizontal-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>-->
-                <MenuItem  x:Name="menuSongOptions" Header="_Options" IsEnabled="False" Click="MenuSongOptions_Click">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-services-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="menuTrackInformation" Header="_Track information" Click="MenuTrackInformation_Click" IsEnabled="False">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-sheet-music-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="menuEditBookmarks" Header="_Edit bookmarks" IsEnabled="False" Click="MenuEditBookmarks_Click">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-bookmark-book-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-            </MenuItem>
-            <MenuItem Header="_Playlist" Name="playlistMenu">
-                <MenuItem x:Name="menuShuffle" Click="ShuffleToggleButton_Click" Header="_Shuffle" IsCheckable="True">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-shuffle-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="_Create playlist" Click="MenuEditPlaylists_Click">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-smart-playlist-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-            </MenuItem>
-            <MenuItem Header="Other">
-                <!--<MenuItem Header="Preferences">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-settings-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>-->
-                <MenuItem Header="About" Click="MenuAbout_Click">
-                    <MenuItem.Icon>
-                        <Image Source="/Images/icons8-info-48.png" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
 
-        <DockPanel Margin="0,0,0,0" Grid.Row="1">
-            <Separator DockPanel.Dock="Top" Margin="0,0,0,0" Height="1" Background="#F0F0F0"/>
+        <DockPanel Grid.Row="0" Margin="0,1,0,0">
+            <Menu FlowDirection="LeftToRight" DockPanel.Dock="Left">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" Click="MenuOpen_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-folder-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="MenuExit_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-close-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Song" Name="songMenu">
+                    <MenuItem x:Name="menuRepeat" Click="RepeatToggleButton_Click" Header="Repeat" IsCheckable="True">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-repeat-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <!--<MenuItem Header="Jump to time">
+            <MenuItem.Icon>
+                <Image Source="/Images/icons8-sorting-arrows-horizontal-48.png" />
+            </MenuItem.Icon>
+        </MenuItem>-->
+                    <MenuItem  x:Name="menuSongOptions" Header="_Options" IsEnabled="False" Click="MenuSongOptions_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-services-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="menuTrackInformation" Header="_Track information" Click="MenuTrackInformation_Click" IsEnabled="False">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-sheet-music-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="menuEditBookmarks" Header="_Edit bookmarks" IsEnabled="False" Click="MenuEditBookmarks_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-bookmark-book-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                </MenuItem>
+                <MenuItem Header="_Playlist" Name="playlistMenu">
+                    <MenuItem x:Name="menuShuffle" Click="ShuffleToggleButton_Click" Header="_Shuffle" IsCheckable="True">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-shuffle-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="_Create playlist" Click="MenuEditPlaylists_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-smart-playlist-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                </MenuItem>
+                <MenuItem Header="Other">
+                    <!--<MenuItem Header="Preferences">
+            <MenuItem.Icon>
+                <Image Source="/Images/icons8-settings-48.png" />
+            </MenuItem.Icon>
+        </MenuItem>-->
+                    <MenuItem Header="About" Click="MenuAbout_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-info-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="menuDarkMode" Header="Dark Mode" Click="MenuDarkMode_Click" IsCheckable="True">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/icons8-new-moon-48.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <Border Width="32" Height="16" MouseEnter="TitleBar_MouseEnter" MouseLeftButtonUp="MinimizeWindowButtonPressed">
+                    <Image Source="/Images/icons8-minimize-gray-48.png"></Image>
+                </Border>
+                <Border Width="32" Height="16" MouseEnter="TitleBar_MouseEnter" MouseLeftButtonUp="CloseWindowButtonPressed">
+                    <Image Source="/Images/icons8-close-gray-48.png"></Image>
+                </Border>
+            </StackPanel>
+
+            <Menu PreviewMouseLeftButtonDown="Menu_MouseLeftButtonDown" />
+        </DockPanel>
+
+        <DockPanel Margin="0,0,0,0" Grid.Row="1" AllowDrop="True" PreviewDragEnter="MainFileDragEnter" PreviewDrop="MainFileDrop">
+            <Separator DockPanel.Dock="Top" Margin="0,0,0,0" Height="1"/>
             <Grid Height="Auto" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
-                <Image Name="coverArtImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding CurrentAlbumArt, UpdateSourceTrigger=PropertyChanged}" d:Source="/Images/icons8-audio-wave.png" Margin="0" AllowDrop="True" DragEnter="MainFileDragEnter" Drop="MainFileDrop"/>
+                <Image Name="coverArtImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding CurrentAlbumArt, UpdateSourceTrigger=PropertyChanged}" d:Source="/Images/icons8-audio-wave.png" Margin="0"/>
             </Grid>
             <DockPanel Margin="6,0,0,0" HorizontalAlignment="Stretch">
-                <TextBlock x:Name="titleBlock" DockPanel.Dock="Top" Text="{Binding CurrentSongTitle, UpdateSourceTrigger=PropertyChanged}" d:Text="Title goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,4,1,1" FontSize="20" FontFamily="Roboto" FontWeight="Bold" />
-                <TextBlock x:Name="albumBlock" DockPanel.Dock="Top" Text="{Binding CurrentAlbum, UpdateSourceTrigger=PropertyChanged}" d:Text="Album goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,1,1,1" FontSize="10" FontFamily="Roboto" />
-                <TextBlock x:Name="artistBlock" DockPanel.Dock="Top" Text="{Binding CurrentArtist, UpdateSourceTrigger=PropertyChanged}" d:Text="Album artist goes here" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource FontColor}" Margin="4,2,1,1" FontSize="10" FontFamily="Roboto" FontStyle="Italic" />
+                <TextBlock x:Name="titleBlock" DockPanel.Dock="Top" Text="{Binding CurrentSongTitle, UpdateSourceTrigger=PropertyChanged}" d:Text="Title goes here" TextTrimming="CharacterEllipsis" Margin="4,4,1,1" FontSize="20" FontFamily="Roboto" FontWeight="Bold" />
+                <TextBlock x:Name="albumBlock" DockPanel.Dock="Top" Text="{Binding CurrentAlbum, UpdateSourceTrigger=PropertyChanged}" d:Text="Album goes here" TextTrimming="CharacterEllipsis" Margin="4,1,1,1" FontSize="10" FontFamily="Roboto" />
+                <TextBlock x:Name="artistBlock" DockPanel.Dock="Top" Text="{Binding CurrentArtist, UpdateSourceTrigger=PropertyChanged}" d:Text="Album artist goes here" TextTrimming="CharacterEllipsis" Margin="4,2,1,1" FontSize="10" FontFamily="Roboto" FontStyle="Italic" />
                 <StackPanel>
                     <DockPanel Margin="6,2,14,0">
                         <TextBlock DockPanel.Dock="Left" Text="{Binding ElementName=SongSlider, Path=Value, Converter={StaticResource SecondsToTimeSpanConverter}, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding TotalSongDuration, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>
                         <TextBlock Name="loadingBlock" Text="Loading..." FontStyle="Italic" HorizontalAlignment="Center" Visibility="Hidden"/>
                     </DockPanel>
-
-
-                    <Slider x:Name="SongSlider" Minimum="0" Maximum="100" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" PreviewMouseLeftButtonDown="SongSlider_PreviewMouseLeftButtonDown">
+                    
+                    <Slider x:Name="SongSlider" Minimum="0" Maximum="0.5" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" PreviewMouseLeftButtonDown="SongSlider_PreviewMouseLeftButtonDown">
                         <Slider.Template>
                             <ControlTemplate TargetType="Slider">
                                 <Grid Height="10px" Margin="0px 2px 0px 4px">
-
                                     <Border x:Name="BackgroundTrack" Background="LightGray" CornerRadius="4"/>
-                                    <!-- Thumb -->
                                     <Track x:Name="PART_Track">
                                         <Track.DecreaseRepeatButton>
                                             <RepeatButton>
@@ -181,7 +189,6 @@
                                             </RepeatButton>
                                         </Track.IncreaseRepeatButton>
                                     </Track>
-                                    
                                 </Grid>
                             </ControlTemplate>
                         </Slider.Template>

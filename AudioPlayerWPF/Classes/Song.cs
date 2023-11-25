@@ -11,15 +11,12 @@ namespace AudioPlayerWPF.Classes
         private TagLib.File? tagFile;
         private Uri fileUri;
 
-        // FOR JSON USE
-        //private int lengthSeconds;
-
         public Song(Uri uri) {
             fileUri = uri;
             
         }
         ~Song() {
-            Console.WriteLine($"Disposing tags for: {FileName}");
+            // Console.WriteLine($"Disposing tags for: {FileName}");
             if (tagFile != null ) {
                 tagFile.Dispose();
             }
@@ -32,7 +29,6 @@ namespace AudioPlayerWPF.Classes
         }
 
         // Properties
-
         public Uri FileUri { get { return fileUri; } }
         public TagLib.File TagLibFile {
             get {

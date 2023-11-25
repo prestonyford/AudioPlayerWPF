@@ -17,10 +17,10 @@ using System.Windows.Controls.Primitives;
 
 namespace AudioPlayerWPF {
     public partial class MainWindow : Window {
-        private SongViewModel songViewModel;
-        private MediaPlayer mediaPlayer;
-        private DispatcherTimer timer;
-        private Playlist playlist;
+        private SongViewModel songViewModel = new SongViewModel();
+        private MediaPlayer mediaPlayer = new MediaPlayer();
+        private DispatcherTimer timer = new DispatcherTimer();
+        private Playlist playlist = new Playlist();
 
         private bool userIsDraggingSlider = false;
         private bool musicIsPlaying = false;
@@ -30,8 +30,8 @@ namespace AudioPlayerWPF {
 
         private Stack<Uri> history = new Stack<Uri>();
 
-        private Dictionary<string, MenuItem> playlistMenuItemsDictionary;
-        private Dictionary<TimeSpan, MenuItem> bookmarkMenuItemsDictionary;
+        private Dictionary<string, MenuItem> playlistMenuItemsDictionary = new Dictionary<string, MenuItem>();
+        private Dictionary<TimeSpan, MenuItem> bookmarkMenuItemsDictionary = new Dictionary<TimeSpan, MenuItem>();
 
         // song options
         private double startingPos = 0; // these are in milliseconds
@@ -44,18 +44,13 @@ namespace AudioPlayerWPF {
         private bool beforeDragSongPlaying = false;
 
         // Constructors
-
         public MainWindow() {
             InitializeComponent();
-            songViewModel = new SongViewModel();
-            mediaPlayer = new MediaPlayer();
             mediaPlayer.MediaOpened += OnMediaOpened;
             mediaPlayer.MediaEnded += OnMediaEnded;
-            timer = new DispatcherTimer();
+
             timer.Interval = TimeSpan.FromMilliseconds(tickSpeed);
             timer.Tick += Timer_Tick;
-            playlistMenuItemsDictionary = new Dictionary<string, MenuItem>();
-            bookmarkMenuItemsDictionary = new Dictionary<TimeSpan, MenuItem>();
 
             DataContext = songViewModel;
 
@@ -68,10 +63,12 @@ namespace AudioPlayerWPF {
                 playlistMenuItemsDictionary.Add(name, newMenuItem);
             }
 
-            playlist = new Playlist();
-
             DisablePrevTrackButton();
             DisableNextTrackButton();
+
+            if (Properties.Settings.Default.DarkMode) {
+                menuDarkMode.IsChecked = true;
+            }
 
             Closing += (sender, e) => { Application.Current.Shutdown(); };
         }
@@ -129,7 +126,6 @@ namespace AudioPlayerWPF {
                 // Play playlist button
                 RoutedEventHandler? playLambda = null;
                 playLambda = (object sender, RoutedEventArgs e) => {
-                    loadingBlock.Visibility = Visibility.Visible;
                     List<Song> songs = new List<Song>();
                     foreach (PlaylistItemDTO item in playlistJson.Songs) {
                         if (SongExists(item.FilePath)) {
@@ -174,7 +170,6 @@ namespace AudioPlayerWPF {
 
                     int j = i;
                     RoutedEventHandler songHandler = (object sender, RoutedEventArgs e) => {
-                        loadingBlock.Visibility = Visibility.Visible;
                         List<Song> songs = new List<Song>();
                         foreach (PlaylistItemDTO item in playlistJson.Songs) {
                             if (SongExists(item.FilePath)) {
@@ -588,6 +583,15 @@ namespace AudioPlayerWPF {
             aboutWindow.Show();
         }
 
+        private void MenuDarkMode_Click(object sender, RoutedEventArgs e) {
+            Console.WriteLine($"Dark was {(Properties.Settings.Default.DarkMode ? "Enabled" : "Disabled")}");
+
+            Properties.Settings.Default.DarkMode = !Properties.Settings.Default.DarkMode;
+            Properties.Settings.Default.Save();
+
+            Console.WriteLine($"Dark mode is now {(Properties.Settings.Default.DarkMode ? "Enabled" : "Disabled")}");
+        }
+
 
         // Button event handlers
 
@@ -646,7 +650,10 @@ namespace AudioPlayerWPF {
 
         // CANNOT USE  IsMoveToPointEnabled="True"  because it absorbs click events, and does not work properly due to the slider being updated every tick
         private void SongSlider_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            if (playlist != null && sender is Slider s) {
+            if (sender is Slider s) {
+                if (playlist.Songs.Count == 0) {
+                    return;
+                }
                 Point mousePosition = e.GetPosition(s);
                 double thumbWidth = ((Track)SongSlider.Template.FindName("PART_Track", SongSlider)).Thumb.Width;
 
@@ -685,7 +692,7 @@ namespace AudioPlayerWPF {
                     mediaPlayer.Close();
 
                     int tries = 0;
-                attempt_save:
+                    attempt_save:
                     try {
                         e.Song.TagLibFile.Save();
                     }
@@ -815,10 +822,27 @@ namespace AudioPlayerWPF {
                     EnableNextTrackButton();
                 }
                 DisablePrevTrackButton();
+            }
+            e.Handled = true;
+        }
 
+        private void Menu_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            DragMove();
+            e.Handled = true;
+        }
+
+        private void TitleBar_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
+            if (sender is DockPanel d) {
+                d.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E1E1E"));
             }
         }
 
+        private void CloseWindowButtonPressed(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            Close();
+        }
 
+        private void MinimizeWindowButtonPressed(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            WindowState = WindowState.Minimized;
+        }
     }
 }

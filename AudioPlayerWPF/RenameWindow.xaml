@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:AudioPlayerWPF"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        WindowStyle="ToolWindow"
         Background="White"
         ShowInTaskbar="False"
         Height="140" Width="256">
