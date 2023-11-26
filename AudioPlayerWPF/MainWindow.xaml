@@ -10,15 +10,11 @@
         
         mc:Ignorable="d"
         Title="AudioPlayerWPF"
-        Height="184" Width="460"
-        MinHeight="184" MinWidth="460"
+        Height="200" Width="460"
+        MinHeight="200" MinWidth="460"
         MaxHeight="256" MaxWidth="720"
-        WindowStyle="None"
-        >
+        ResizeMode="CanMinimize">
 
-    <WindowChrome.WindowChrome>
-        <WindowChrome GlassFrameThickness="1" CaptionHeight="0"/>
-    </WindowChrome.WindowChrome>
     <Window.Resources>
         <SolidColorBrush x:Key="FontColor" Color="Black" />
 
@@ -40,7 +36,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Margin="0,1,0,0">
+        <DockPanel Grid.Row="0">
             <Menu FlowDirection="LeftToRight" DockPanel.Dock="Left">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open" Click="MenuOpen_Click">
@@ -116,16 +112,6 @@
                     </MenuItem>
                 </MenuItem>
             </Menu>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                <Border Width="32" Height="16" MouseEnter="TitleBar_MouseEnter" MouseLeftButtonUp="MinimizeWindowButtonPressed">
-                    <Image Source="/Images/icons8-minimize-gray-48.png"></Image>
-                </Border>
-                <Border Width="32" Height="16" MouseEnter="TitleBar_MouseEnter" MouseLeftButtonUp="CloseWindowButtonPressed">
-                    <Image Source="/Images/icons8-close-gray-48.png"></Image>
-                </Border>
-            </StackPanel>
-
             <Menu PreviewMouseLeftButtonDown="Menu_MouseLeftButtonDown" />
         </DockPanel>
 
@@ -144,57 +130,8 @@
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding TotalSongDuration, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" d:Text="0:00"/>
                         <TextBlock Name="loadingBlock" Text="Loading..." FontStyle="Italic" HorizontalAlignment="Center" Visibility="Hidden"/>
                     </DockPanel>
-                    
-                    <Slider x:Name="SongSlider" Minimum="0" Maximum="0.5" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" PreviewMouseLeftButtonDown="SongSlider_PreviewMouseLeftButtonDown">
-                        <Slider.Template>
-                            <ControlTemplate TargetType="Slider">
-                                <Grid Height="10px" Margin="0px 2px 0px 4px">
-                                    <Border x:Name="BackgroundTrack" Background="LightGray" CornerRadius="4"/>
-                                    <Track x:Name="PART_Track">
-                                        <Track.DecreaseRepeatButton>
-                                            <RepeatButton>
-                                                <RepeatButton.Template>
-                                                    <ControlTemplate>
-                                                        <Border SnapsToDevicePixels="True" Background="#0883D9" Height="10" Margin="0,0,-4,0">
-                                                            <Border.CornerRadius>
-                                                                <CornerRadius TopLeft="4" BottomLeft="4"/>
-                                                            </Border.CornerRadius>
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </RepeatButton.Template>
-                                            </RepeatButton>
-                                        </Track.DecreaseRepeatButton>
-                                        <Track.Thumb>
-                                            <Thumb Width="14px" Height="10px" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                                <Thumb.Template>
-                                                    <ControlTemplate>
-                                                        <Canvas VerticalAlignment="Center" Height="14px">
-                                                            <Image Source="/Images/icons8-toggle-indeterminate.png" Width="14px" Height="14px"/>
-                                                        </Canvas>
-                                                    </ControlTemplate>
-                                                </Thumb.Template>
-                                            </Thumb>
-                                        </Track.Thumb>
-                                        <Track.IncreaseRepeatButton>
-                                            <RepeatButton>
-                                                <RepeatButton.Template>
-                                                    <ControlTemplate>
-                                                        <Border SnapsToDevicePixels="True" Background="LightGray" Height="10">
-                                                            <Border.CornerRadius>
-                                                                <CornerRadius TopRight="4" BottomRight="4"/>
-                                                            </Border.CornerRadius>
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </RepeatButton.Template>
-                                            </RepeatButton>
-                                        </Track.IncreaseRepeatButton>
-                                    </Track>
-                                </Grid>
-                            </ControlTemplate>
-                        </Slider.Template>
 
-                    </Slider>
-
+                    <Slider x:Name="SongSlider" Minimum="0" Maximum="0.5" DockPanel.Dock="Top" Margin="6,1,14,0" Value="0" Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted" PreviewMouseLeftButtonDown="SongSlider_PreviewMouseLeftButtonDown" />
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="-8,4,0,0" >
                         <Button x:Name="prevTrackButton" Width="36" Height="36" Click="PrevTrackButton_Click" Margin="0,0,10,0" ToolTip="Previous song">

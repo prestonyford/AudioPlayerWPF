@@ -27,6 +27,11 @@ namespace AudioPlayerWPF {
 
         public PlaylistEditorWindow(string name) {
             InitializeComponent();
+            SourceInitialized += (sender, e) => {
+                if (Properties.Settings.Default.DarkMode) {
+                    App.ChangeWindowDarkMode(this, true);
+                }
+            };
 
             this.name = name;
             //editingExistingPlaylist = true;
@@ -63,6 +68,11 @@ namespace AudioPlayerWPF {
 
         public PlaylistEditorWindow() {
             InitializeComponent();
+            SourceInitialized += (sender, e) => {
+                if (Properties.Settings.Default.DarkMode) {
+                    App.ChangeWindowDarkMode(this, true);
+                }
+            };
 
             name = "";
             //editingExistingPlaylist = false;

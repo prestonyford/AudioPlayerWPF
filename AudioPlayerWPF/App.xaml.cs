@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -56,6 +57,12 @@ namespace AudioPlayerWPF {
             SystemParameters.StaticPropertyChanged += (sender, e) => {
                 setAlignmentValue();
             };
+        }
+
+        [DllImport("dwmapi.dll", SetLastError = true)]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref bool attrValue, int attrSize);
+        public static void ChangeWindowDarkMode(Window window, bool darkMode) {
+            DwmSetWindowAttribute(new System.Windows.Interop.WindowInteropHelper(window).Handle, 20, ref darkMode, System.Runtime.InteropServices.Marshal.SizeOf(darkMode));
         }
     }
 }

@@ -38,5 +38,41 @@
     <Page Update="SongOptionsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\ColourDictionaries\DarkGreyTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ColourDictionaries\DeepDark.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ColourDictionaries\GreyTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ColourDictionaries\LightTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ColourDictionaries\RedBlackTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ColourDictionaries\SoftDark.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ColourfulDarkTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ColourfulLightTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\ControlColours.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Controls.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\DarkTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\LightTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>

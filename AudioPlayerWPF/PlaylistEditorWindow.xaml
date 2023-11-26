@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:AudioPlayerWPF"
         xmlns:classes="clr-namespace:AudioPlayerWPF.Classes"
         mc:Ignorable="d"
-        Background="White"
         Title="Edit Playlist"
         Height="450" Width="720"
         MinHeight="320" MinWidth="512"
@@ -38,7 +37,7 @@
                         <ListView Margin="10" DockPanel.Dock="Left" Name="mainListView" SelectionChanged="mainListView_SelectionChanged" AllowDrop="True" DragEnter="mainListView_DragEnter" Drop="mainListView_Drop" SelectionMode="Extended" ItemsSource="{Binding SongCollection, UpdateSourceTrigger=Default}">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="File Path" Width="50" DisplayMemberBinding="{Binding Data.FilePath}" />
+                                    <GridViewColumn Header="File Path" Width="50" DisplayMemberBinding="{Binding Data.FilePath}"/>
                                     <GridViewColumn Header="File Name" Width="256" DisplayMemberBinding="{Binding Data.FileName}" />
                                     <GridViewColumn Header="Title" Width="180" DisplayMemberBinding="{Binding Data.Title}"/>
                                     <GridViewColumn Header="Length" Width="50" DisplayMemberBinding="{Binding Data.Duration, Converter={StaticResource SecondsToTimeSpanConverter}, StringFormat=mm\\:ss}">

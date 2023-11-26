@@ -48,6 +48,12 @@ namespace AudioPlayerWPF {
                 }
             }
 
+            SourceInitialized += (sender, e) => {
+                if (Properties.Settings.Default.DarkMode) {
+                    App.ChangeWindowDarkMode(this, true);
+                }
+            };
+
             InitializeComponent();
         }
         

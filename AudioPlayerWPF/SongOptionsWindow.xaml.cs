@@ -20,8 +20,13 @@ namespace AudioPlayerWPF {
 
         public SongOptionsWindow(string name) {
             InitializeComponent();
-            this.name = name;
+            SourceInitialized += (sender, e) => {
+                if (Properties.Settings.Default.DarkMode) {
+                    App.ChangeWindowDarkMode(this, true);
+                }
+            };
 
+            this.name = name;
             string bookmarksPath = System.IO.Path.Combine(App.bookmarksDirectory, name + ".json");
             optionsPath = System.IO.Path.Combine(App.songOptionsDirectory, name + ".json");
 

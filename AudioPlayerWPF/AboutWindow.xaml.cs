@@ -12,9 +12,14 @@ namespace AudioPlayerWPF {
     /// </summary>
     public partial class AboutWindow : Window
     {
-        public AboutWindow()
-        {
+        public AboutWindow() {
             InitializeComponent();
+
+            SourceInitialized += (sender, e) => {
+                if (Properties.Settings.Default.DarkMode) {
+                    App.ChangeWindowDarkMode(this, true);
+                }
+            };
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e) {

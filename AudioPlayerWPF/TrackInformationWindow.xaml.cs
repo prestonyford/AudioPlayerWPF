@@ -20,9 +20,14 @@ namespace AudioPlayerWPF {
 
         public TrackInformationWindow(Song song) {
             InitializeComponent();
+            SourceInitialized += (sender, e) => {
+                if (Properties.Settings.Default.DarkMode) {
+                    App.ChangeWindowDarkMode(this, true);
+                }
+            };
 
             this.song = song;
-            
+
             double length = new FileInfo(song.FileUri.LocalPath).Length;
             fileSize.Text = (length / (double)(1024.0 * 1024.0)).ToString("N2") + " MB";
             audioFormat.Text = song.TagLibFile.Properties.Description;
@@ -41,7 +46,7 @@ namespace AudioPlayerWPF {
             txtBoxTrackNumber.Text = song.TagLibFile.Tag.Track.ToString();
             txtBoxDiscNumber.Text = song.TagLibFile.Tag.Disc.ToString();
             txtBoxYear.Text = song.TagLibFile.Tag.Year.ToString();
-            
+
             if (song.CoverArt != null) {
                 albumArtImage.Source = song.CoverArt;
             }

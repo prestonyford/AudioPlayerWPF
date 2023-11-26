@@ -70,7 +70,16 @@ namespace AudioPlayerWPF {
                 menuDarkMode.IsChecked = true;
             }
 
-            Closing += (sender, e) => { Application.Current.Shutdown(); };
+            SourceInitialized += (sender, e) => {
+                if (Properties.Settings.Default.DarkMode) {
+                    App.ChangeWindowDarkMode(this, true);
+                }
+            };
+
+            Closing += (sender, e) => {
+                Properties.Settings.Default.Save();
+                Application.Current.Shutdown();
+            };
         }
 
         // Properties
@@ -584,12 +593,9 @@ namespace AudioPlayerWPF {
         }
 
         private void MenuDarkMode_Click(object sender, RoutedEventArgs e) {
-            Console.WriteLine($"Dark was {(Properties.Settings.Default.DarkMode ? "Enabled" : "Disabled")}");
-
-            Properties.Settings.Default.DarkMode = !Properties.Settings.Default.DarkMode;
-            Properties.Settings.Default.Save();
-
-            Console.WriteLine($"Dark mode is now {(Properties.Settings.Default.DarkMode ? "Enabled" : "Disabled")}");
+            bool darkMode = Properties.Settings.Default.DarkMode;
+            Properties.Settings.Default.DarkMode = !darkMode;
+            App.ChangeWindowDarkMode(this, !darkMode);
         }
 
 
@@ -835,14 +841,6 @@ namespace AudioPlayerWPF {
             if (sender is DockPanel d) {
                 d.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E1E1E"));
             }
-        }
-
-        private void CloseWindowButtonPressed(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            Close();
-        }
-
-        private void MinimizeWindowButtonPressed(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            WindowState = WindowState.Minimized;
         }
     }
 }
