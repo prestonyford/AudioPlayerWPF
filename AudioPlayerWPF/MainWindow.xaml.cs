@@ -86,12 +86,14 @@ namespace AudioPlayerWPF {
             Uri source = new Uri("Styles/MenuItem.xaml", UriKind.Relative);
 
             if (Properties.Settings.Default.DarkMode) {
+                App.ChangeWindowDarkMode(this, true);
                 menuDarkMode.IsChecked = true;
                 ResourceDictionary darkModeDictionary = new ResourceDictionary();
                 darkModeDictionary.Source = source;
                 Application.Current.Resources.MergedDictionaries.Add(darkModeDictionary);
             }
             else {
+                App.ChangeWindowDarkMode(this, false);
                 foreach (ResourceDictionary dict in Application.Current.Resources.MergedDictionaries) {
                     if (dict.Source == source) {
                         Application.Current.Resources.MergedDictionaries.Remove(dict);
@@ -497,6 +499,12 @@ namespace AudioPlayerWPF {
 
         private void Timer_Tick(object? sender, EventArgs e) {
             UpdateSlider();
+            if (endingPos != 0) {
+                double diff = mediaPlayer.Position.TotalMilliseconds - endingPos;
+                if (diff >= 0 && diff <= tickSpeed) {
+                    MediaPlayerOpenNewSong(playlist.GoNextSong());
+                }
+            }
         }
 
         // Menu bar event handlers
@@ -608,7 +616,6 @@ namespace AudioPlayerWPF {
         private void MenuDarkMode_Click(object sender, RoutedEventArgs e) {
             bool darkMode = Properties.Settings.Default.DarkMode;
             Properties.Settings.Default.DarkMode = !darkMode;
-            App.ChangeWindowDarkMode(this, !darkMode);
             UpdateDarkMode();
         }
 

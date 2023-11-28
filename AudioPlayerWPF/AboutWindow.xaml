@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AudioPlayerWPF"
         mc:Ignorable="d"
         ShowInTaskbar="False"
-        Title="About" Height="340" Width="420">
+        Title="About" Height="420" Width="420">
     <DockPanel>
         <DockPanel Margin="6">
             <Button DockPanel.Dock="Bottom" Width="73" Height="23" HorizontalAlignment="Right" Margin="0, 4, 4, 4" Click="OKButton_Click">OK</Button>
@@ -19,6 +19,7 @@
             <ScrollViewer>
                 <StackPanel>
                     <TextBlock Padding="6" TextWrapping="Wrap">This is my first ever project written in C#. It uses the WPF (Windows Presentation Foundation) GUI framework, which is included in Microsoft's .NET Core.</TextBlock>
+                    <TextBlock Padding="6,0,6,6" TextWrapping="Wrap">The goal, apart from learning about the .NET Framework, is to make a simple yet comprehensive music player that allows that combines the features I found and enjoyed in various other apps into just one app. It is still a work in progress!</TextBlock>
                     <TextBlock Padding="6,0,6,6" TextWrapping="Wrap">
                         <Run Text="Tag reading/editing functionality is provided by"/>
                         <Hyperlink NavigateUri="https://taglib.org/" RequestNavigate="Hyperlink_RequestNavigateTagLib">
