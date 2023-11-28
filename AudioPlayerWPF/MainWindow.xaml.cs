@@ -66,14 +66,8 @@ namespace AudioPlayerWPF {
             DisablePrevTrackButton();
             DisableNextTrackButton();
 
-            if (Properties.Settings.Default.DarkMode) {
-                menuDarkMode.IsChecked = true;
-            }
-
             SourceInitialized += (sender, e) => {
-                if (Properties.Settings.Default.DarkMode) {
-                    App.ChangeWindowDarkMode(this, true);
-                }
+                UpdateDarkMode();
             };
 
             Closing += (sender, e) => {
@@ -87,6 +81,25 @@ namespace AudioPlayerWPF {
         public double WindowHeight { get { return this.Height; } }
 
         // Helpers
+
+        private void UpdateDarkMode() {
+            Uri source = new Uri("Styles/MenuItem.xaml", UriKind.Relative);
+
+            if (Properties.Settings.Default.DarkMode) {
+                menuDarkMode.IsChecked = true;
+                ResourceDictionary darkModeDictionary = new ResourceDictionary();
+                darkModeDictionary.Source = source;
+                Application.Current.Resources.MergedDictionaries.Add(darkModeDictionary);
+            }
+            else {
+                foreach (ResourceDictionary dict in Application.Current.Resources.MergedDictionaries) {
+                    if (dict.Source == source) {
+                        Application.Current.Resources.MergedDictionaries.Remove(dict);
+                        break;
+                    }
+                }
+            }
+        }
 
         private MenuItem NewBookmarkMenuItem(BookmarkDTO bookmark) {
             MenuItem item = new MenuItem();
@@ -596,6 +609,7 @@ namespace AudioPlayerWPF {
             bool darkMode = Properties.Settings.Default.DarkMode;
             Properties.Settings.Default.DarkMode = !darkMode;
             App.ChangeWindowDarkMode(this, !darkMode);
+            UpdateDarkMode();
         }
 
 
