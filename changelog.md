@@ -1,9 +1,10 @@
 # CHANGELOG
 ## v2.0.0b
-- New dark mode
+- New dark mode under 'About' menu item
 - Fixed ending pos setting
 - About window now displays changelog
-- Songs in a playlist are no longer all loaded in bulk, and now loaded only as-needed 
+- Songs in a playlist are no longer all loaded in bulk, and now loaded only as-needed
+- Main window can no longer be resized
 
 ## v1.3.1
 - Fixed a significant audio playback issue
