@@ -110,7 +110,7 @@
                             <Image Source="/Images/icons8-info-48.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuDarkMode" Header="Dark Mode (WIP)" Click="MenuDarkMode_Click" IsCheckable="True">
+                    <MenuItem x:Name="menuDarkMode" Header="Dark Mode" Click="MenuDarkMode_Click" IsCheckable="True">
                         <MenuItem.Icon>
                             <Image Source="/Images/icons8-new-moon-48.png" />
                         </MenuItem.Icon>

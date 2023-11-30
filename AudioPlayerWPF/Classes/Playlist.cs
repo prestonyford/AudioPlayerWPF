@@ -9,6 +9,9 @@ namespace AudioPlayerWPF.Classes
         private int currentSongIdx;
         private bool repeat = false;
         private bool shuffle = false;
+        
+        // Stack history by index
+        private Stack<int> history = new Stack<int>();
 
         public Playlist() {
             name = "Unnamed empty playlist";
@@ -30,6 +33,7 @@ namespace AudioPlayerWPF.Classes
             this.name = name;
             this.songs = songs;
             currentSongIdx = 0;
+            history.Clear();
         }
         public bool NextSongExists(bool ignoreRepeat = false) {
             if (shuffle || (repeat && !ignoreRepeat)) { return true; }
@@ -38,9 +42,13 @@ namespace AudioPlayerWPF.Classes
             }
         }
         public bool PreviousSongExists() {
-            return currentSongIdx != 0;
+            // return currentSongIdx != 0;
+            return (shuffle && history.Count > 0) || (!shuffle && currentSongIdx > 0);
         }
         public Song? GoNextSong(bool ignoreRepeat = false) {
+            // Save current to history
+            this.history.Push(currentSongIdx);
+
             if (!ignoreRepeat && repeat) {
                 return songs[currentSongIdx];
             }
@@ -56,8 +64,16 @@ namespace AudioPlayerWPF.Classes
             return songs[currentSongIdx];
         }
         public Song GoPrevSong() {
-            if (currentSongIdx > 0) {
-                --currentSongIdx;
+            if (shuffle) {
+                if (history.Count > 0) {
+                    int prevSongIdx = history.Pop();
+                    currentSongIdx = prevSongIdx;
+                }
+            }
+            else {
+                if (currentSongIdx > 0) {
+                    --currentSongIdx;
+                }
             }
             return songs[currentSongIdx];
         }

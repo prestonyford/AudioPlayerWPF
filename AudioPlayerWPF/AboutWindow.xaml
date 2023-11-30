@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:AudioPlayerWPF"
         mc:Ignorable="d"
         ShowInTaskbar="False"
-        Title="About" Height="512" Width="600">
+        Title="About" Height="512" Width="512">
     <DockPanel>
         <DockPanel Margin="6">
             <Button DockPanel.Dock="Bottom" Width="73" Height="23" HorizontalAlignment="Right" Margin="0, 4, 4, 4" Click="OKButton_Click">OK</Button>
             <Border DockPanel.Dock="Top" BorderBrush="DarkGray" VerticalAlignment="Top" BorderThickness="2" CornerRadius="6" Padding="0,6,0,6" Margin="4,0,4,4">
                 <StackPanel>
-                    <TextBlock Text="AudioPlayerWPF v2.0.0b" HorizontalAlignment="Center" FontSize="28"/>
-                    <TextBlock Text="Preston Ford - 11/27/23" HorizontalAlignment="Center" FontSize="12" Margin="0,6,0,0"/>
+                    <TextBlock Text="AudioPlayerWPF v2.0.0" HorizontalAlignment="Center" FontSize="28"/>
+                    <TextBlock Text="Preston Ford - 11/30/23" HorizontalAlignment="Center" FontSize="12" Margin="0,6,0,0"/>
                 </StackPanel>
             </Border>
             <ScrollViewer>
@@ -24,15 +24,20 @@
 
                         </TextBox>
                     </GroupBox>
-                    
-                    
+
+
                     <TextBlock Padding="6,0,6,6" TextWrapping="Wrap">This is my first ever project written in C#. It uses the WPF (Windows Presentation Foundation) GUI framework, which is included in Microsoft's .NET Core.</TextBlock>
-                    <TextBlock Padding="6,0,6,6" TextWrapping="Wrap">The goal for me, apart from learning about the .NET Framework, is to make a simple yet comprehensive music player that combines the features I found and enjoyed in various other apps into just one app. It is still a work in progress!</TextBlock>
                     <TextBlock Padding="6,0,6,6" TextWrapping="Wrap">
                         <Run Text="Tag reading/editing functionality is provided by"/>
                         <Hyperlink NavigateUri="https://taglib.org/" RequestNavigate="Hyperlink_RequestNavigateTagLib">
                             <TextBlock TextDecorations="Underline">
                                 <Run Text="TagLib#"/>
+                            </TextBlock>
+                        </Hyperlink><!--
+                        --><Run Text=". The dark theme for the ListView and ComboBox controls are provided by" />
+                        <Hyperlink NavigateUri="https://github.com/AngryCarrot789/WPFDarkTheme" RequestNavigate="Hyperlink_RequestNavigateTagLib">
+                            <TextBlock TextDecorations="Underline">
+                                <Run Text="WPFDarkTheme"/>
                             </TextBlock>
                         </Hyperlink><!--
                         --><Run Text="." />

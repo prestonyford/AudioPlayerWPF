@@ -15,7 +15,7 @@
         <DockPanel>
             <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom">
                 <Separator DockPanel.Dock="Top"/>
-                <TextBlock Name="newTagFormatBlock" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="10,8,8,8" FontStyle="Italic" Text="Editing song tags may affect bookmark data" />
+                <TextBlock Name="newTagFormatBlock" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="10,8,8,8" FontStyle="Italic" Text="Editing Title property may affect bookmark data" />
                 <Button Width="75" Height="23" Content="Confirm" Click="ConfirmButton_Click" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
                 <Button Width="75" Height="23" Content="Cancel" Click="CancelButton_Click" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
             </DockPanel>
