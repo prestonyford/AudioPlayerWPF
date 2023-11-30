@@ -1,5 +1,5 @@
 # CHANGELOG
-## v2.0.0
+## v2.0
 - New dark mode under 'About' menu item
 - Fixed ending pos setting
 - About window now displays changelog
