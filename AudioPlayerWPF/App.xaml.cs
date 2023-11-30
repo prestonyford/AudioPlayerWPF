@@ -61,8 +61,10 @@ namespace AudioPlayerWPF {
 
         [DllImport("dwmapi.dll", SetLastError = true)]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref bool attrValue, int attrSize);
-        public static void ChangeWindowDarkMode(Window window, bool darkMode) {
-            DwmSetWindowAttribute(new System.Windows.Interop.WindowInteropHelper(window).Handle, 20, ref darkMode, System.Runtime.InteropServices.Marshal.SizeOf(darkMode));
+        public static void ChangeTitleBarDarkMode(bool darkMode) {
+            foreach (Window window in Application.Current.Windows) {
+                DwmSetWindowAttribute(new System.Windows.Interop.WindowInteropHelper(window).Handle, 20, ref darkMode, System.Runtime.InteropServices.Marshal.SizeOf(darkMode));
+            }
         }
     }
 }

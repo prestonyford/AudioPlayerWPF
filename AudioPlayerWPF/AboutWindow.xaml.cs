@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Windows;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace AudioPlayerWPF {
     /// <summary>
@@ -17,9 +15,23 @@ namespace AudioPlayerWPF {
 
             SourceInitialized += (sender, e) => {
                 if (Properties.Settings.Default.DarkMode) {
-                    App.ChangeWindowDarkMode(this, true);
+                    App.ChangeTitleBarDarkMode(true);
                 }
             };
+
+            Update_Changelog();
+        }
+
+        private async void Update_Changelog() {
+            using (HttpClient httpClient = new HttpClient()) {
+                string url = "https://raw.githubusercontent.com/prestonyford/AudioPlayerWPF/main/changelog.md";
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode) {
+                    string content = await response.Content.ReadAsStringAsync();
+                    ChangelogBox.Text = content;
+                }
+            }
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e) {

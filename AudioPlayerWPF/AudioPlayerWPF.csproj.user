@@ -26,9 +26,6 @@
     <Page Update="BookmarksEditorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DarkTheme.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -41,10 +38,19 @@
     <Page Update="SongOptionsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\GridViewColumnHeader.xaml">
+    <Page Update="DarkModeStyles\Brushes.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\MenuItem.xaml">
+    <Page Update="DarkModeStyles\ComboBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DarkModeStyles\ListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DarkModeStyles\MenuItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DarkModeStyles\ScrollBar.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -22,7 +22,7 @@ namespace AudioPlayerWPF {
             InitializeComponent();
             SourceInitialized += (sender, e) => {
                 if (Properties.Settings.Default.DarkMode) {
-                    App.ChangeWindowDarkMode(this, true);
+                    App.ChangeTitleBarDarkMode(true);
                 }
             };
 

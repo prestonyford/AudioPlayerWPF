@@ -11,7 +11,7 @@ namespace AudioPlayerWPF
         public RenameWindow(BookmarkDTO bookmark) {
             SourceInitialized += (sender, e) => {
                 if (Properties.Settings.Default.DarkMode) {
-                    App.ChangeWindowDarkMode(this, true);
+                    App.ChangeTitleBarDarkMode(true);
                 }
             };
 

@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:AudioPlayerWPF"
              xmlns:properties="clr-namespace:AudioPlayerWPF.Properties"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Application.Resources>
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/GridViewColumnHeader.xaml"/>
+
             </ResourceDictionary.MergedDictionaries>
 
             <SolidColorBrush x:Key="Background" Color="#171717"/>
@@ -18,37 +19,6 @@
             <SolidColorBrush x:Key="Foreground" Color="#E6E6E6"/>
             <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
             
-            <!--<Style TargetType="GridViewColumnHeader">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=DarkMode}" Value="True">
-                        <Setter Property="Foreground" Value="{StaticResource Foreground}" />
-                        <Setter Property="Background" Value="{StaticResource Background3}" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="GridViewColumnHeader">
-                                    <Button x:Name="PART_Button">
-                                        <ContentPresenter />
-                                    </Button>
-
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="PART_Button" Property="Background" Value="#1A3745"/>
-                                            <Setter TargetName="PART_Button" Property="BorderBrush" Value="#26A0DA"/>
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter TargetName="PART_Button" Property="Background" Value="#11242D"/>
-                                            <Setter TargetName="PART_Button" Property="BorderBrush" Value="#26A0DA"/>
-                                        </Trigger>
-                                        <Trigger Property="Content" Value="{x:Null}">
-                                            <Setter TargetName="PART_Button" Property="IsEnabled" Value="False"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>-->
 
             <Style TargetType="DockPanel">
                 <Style.Triggers>
@@ -61,15 +31,7 @@
             <Style TargetType="StackPanel">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=DarkMode}" Value="True">
-                        <Setter Property="Background" Value="{StaticResource Background}" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style TargetType="ScrollBar">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=DarkMode}" Value="True">
-                        <Setter Property="Background" Value="{StaticResource Background2}" />
+                        <!--<Setter Property="Background" Value="{StaticResource Background}" />-->
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -326,6 +288,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

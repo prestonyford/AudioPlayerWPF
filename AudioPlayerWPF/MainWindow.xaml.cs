@@ -83,22 +83,53 @@ namespace AudioPlayerWPF {
         // Helpers
 
         private void UpdateDarkMode() {
-            Uri source = new Uri("Styles/MenuItem.xaml", UriKind.Relative);
+            Uri menuItemSource = new Uri("DarkModeStyles/MenuItem.xaml", UriKind.Relative);
+            Uri scrollBarSource = new Uri("DarkModeStyles/ScrollBar.xaml", UriKind.Relative);
+            Uri comboBoxSource = new Uri("DarkModeStyles/ComboBox.xaml", UriKind.Relative);
+            Uri listViewSource = new Uri("DarkModeStyles/ListView.xaml", UriKind.Relative);
 
             if (Properties.Settings.Default.DarkMode) {
-                App.ChangeWindowDarkMode(this, true);
+                App.ChangeTitleBarDarkMode(true);
                 menuDarkMode.IsChecked = true;
-                ResourceDictionary darkModeDictionary = new ResourceDictionary();
-                darkModeDictionary.Source = source;
-                Application.Current.Resources.MergedDictionaries.Add(darkModeDictionary);
+
+                ResourceDictionary menuItemDictionary = new ResourceDictionary();
+                menuItemDictionary.Source = menuItemSource;
+                Application.Current.Resources.MergedDictionaries.Add(menuItemDictionary);
+
+                ResourceDictionary scrollBarDictionary = new ResourceDictionary();
+                scrollBarDictionary.Source = scrollBarSource;
+                Application.Current.Resources.MergedDictionaries.Add(scrollBarDictionary);
+
+                ResourceDictionary comboBoxDictionary = new ResourceDictionary();
+                comboBoxDictionary.Source = comboBoxSource;
+                Application.Current.Resources.MergedDictionaries.Add(comboBoxDictionary);
+
+                ResourceDictionary listViewDictionary = new ResourceDictionary();
+                listViewDictionary.Source = listViewSource;
+                Application.Current.Resources.MergedDictionaries.Add(listViewDictionary);
             }
             else {
-                App.ChangeWindowDarkMode(this, false);
+                App.ChangeTitleBarDarkMode(false);
+
+                List<ResourceDictionary> pendingRemoval = new List<ResourceDictionary>();
                 foreach (ResourceDictionary dict in Application.Current.Resources.MergedDictionaries) {
-                    if (dict.Source == source) {
-                        Application.Current.Resources.MergedDictionaries.Remove(dict);
-                        break;
+                    Console.WriteLine(dict.Source.ToString());
+                    if (dict.Source == menuItemSource) {
+                        pendingRemoval.Add(dict);
                     }
+                    else if (dict.Source == scrollBarSource) {
+                        pendingRemoval.Add(dict);
+                    }
+                    else if (dict.Source == comboBoxSource) {
+                        pendingRemoval.Add(dict);
+                    }
+                    else if (dict.Source == listViewSource) {
+                        pendingRemoval.Add(dict);
+                    }
+                }
+
+                foreach (ResourceDictionary dict in pendingRemoval) {
+                    Application.Current.Resources.MergedDictionaries.Remove(dict);
                 }
             }
         }
