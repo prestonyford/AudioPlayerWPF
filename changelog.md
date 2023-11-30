@@ -1,9 +1,10 @@
 # CHANGELOG
-## v2.0.0b
+## v2.0.0
 - New dark mode under 'About' menu item
 - Fixed ending pos setting
 - About window now displays changelog
 - Songs in a playlist are no longer all loaded in bulk, and now loaded only as-needed
+- Stack-based history (song history is now retained during shuffle mode)
 - Main window can no longer be resized
 
 ## v1.3.1
