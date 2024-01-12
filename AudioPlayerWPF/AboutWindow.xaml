@@ -12,8 +12,8 @@
             <Button DockPanel.Dock="Bottom" Width="73" Height="23" HorizontalAlignment="Right" Margin="0, 4, 4, 4" Click="OKButton_Click">OK</Button>
             <Border DockPanel.Dock="Top" BorderBrush="DarkGray" VerticalAlignment="Top" BorderThickness="2" CornerRadius="6" Padding="0,6,0,6" Margin="4,0,4,4">
                 <StackPanel>
-                    <TextBlock Text="AudioPlayerWPF v2.0.0" HorizontalAlignment="Center" FontSize="28"/>
-                    <TextBlock Text="Preston Ford - 11/30/23" HorizontalAlignment="Center" FontSize="12" Margin="0,6,0,0"/>
+                    <TextBlock Text="AudioPlayerWPF v2.0.1" HorizontalAlignment="Center" FontSize="28"/>
+                    <TextBlock Text="Preston Ford - 1/11/24" HorizontalAlignment="Center" FontSize="12" Margin="0,6,0,0"/>
                 </StackPanel>
             </Border>
             <ScrollViewer>

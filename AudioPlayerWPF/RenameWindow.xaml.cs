@@ -9,12 +9,13 @@ namespace AudioPlayerWPF
     public partial class RenameWindow : Window
     {
         public RenameWindow(BookmarkDTO bookmark) {
+            InitializeComponent();
+            DataContext = this;
             SourceInitialized += (sender, e) => {
                 if (Properties.Settings.Default.DarkMode) {
                     App.ChangeTitleBarDarkMode(true);
                 }
             };
-
             groupBox.Header = $"Rename: {bookmark.Name}";
             textBox.Text = bookmark.Name;
             textBox.Focus();
@@ -22,8 +23,6 @@ namespace AudioPlayerWPF
                 bookmark.Name = textBox.Text;
                 Close();
             };
-            
-            InitializeComponent();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e) {
