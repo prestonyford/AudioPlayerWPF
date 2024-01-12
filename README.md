@@ -10,3 +10,6 @@ An audio player built with .NET's WPF framework that provides several useful fea
 
 ## Required Dependencies (NuGet):
 - TagLib#
+
+## Notes
+- If you are experiencing strange audio volume fluctuations, disable Dolby Atmos effects for speakers and headphones until I can figure out how to fix the issue.
